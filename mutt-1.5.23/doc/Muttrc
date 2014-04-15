@@ -657,26 +657,6 @@ attachments   -I message/external-body
 # $crypt_autosign, $crypt_replysign and $smime_is_default.
 # 
 # 
-# set sidebar_visible=no
-#
-# Name: sidebar_visible
-# Type: boolean
-# Default: no
-# 
-# 
-# This specifies whether or not to show sidebar (left-side list of folders).
-# 
-# 
-# set sidebar_width=0
-#
-# Name: sidebar_width
-# Type: number
-# Default: 0
-# 
-# 
-# The width of the sidebar.
-# 
-# 
 # set crypt_autosign=no
 #
 # Name: crypt_autosign
@@ -2806,6 +2786,93 @@ attachments   -I message/external-body
 # The number of seconds after which a cached passphrase will expire if
 # not used.
 # (PGP only)
+# 
+# 
+# set sidebar_delim="|"
+#
+# Name: sidebar_delim
+# Type: string
+# Default: "|"
+# 
+# 
+# This specifies the delimiter between the sidebar (if visible) and 
+# other screens.
+# 
+# 
+# set sidebar_indentstr=" "
+#
+# Name: sidebar_indentstr
+# Type: string
+# Default: " "
+# 
+# 
+# This specifies the string that is used to indent items
+# with sidebar_folderindent= yes
+# 
+# 
+# set sidebar_visible=no
+#
+# Name: sidebar_visible
+# Type: boolean
+# Default: no
+# 
+# 
+# This specifies whether or not to show sidebar (left-side list of folders).
+# 
+# 
+# set sidebar_sort=no
+#
+# Name: sidebar_sort
+# Type: boolean
+# Default: no
+# 
+# 
+# This specifies whether or not to sort the sidebar alphabetically.
+# 
+# 
+# set sidebar_width=0
+#
+# Name: sidebar_width
+# Type: number
+# Default: 0
+# 
+# 
+# The width of the sidebar.
+# 
+# 
+# set sidebar_shortpath=no
+#
+# Name: sidebar_shortpath
+# Type: boolean
+# Default: no
+# 
+# 
+# Should the sidebar shorten the path showed.
+# 
+# 
+# set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%4S"
+#
+# Name: sidebar_format
+# Type: string
+# Default: "%B%?F? [%F]?%* %?N?%N/?%4S"
+# 
+# 
+# Format string for the sidebar. The sequences `%N', `%F' and `%S'
+# will be replaced by the number of new or flagged messages or the total
+# size of them mailbox. `%B' will be replaced with the name of the mailbox.
+# The `%!' sequence will be expanded to `!' if there is one flagged message;
+# to `!!' if there are two flagged messages; and to `n!' for n flagged
+# messages, n>2.
+# 
+# 
+# set sidebar_folderindent=no
+#
+# Name: sidebar_folderindent
+# Type: boolean
+# Default: no
+# 
+# 
+# Should folders be indented in the sidebar.
 # 
 # 
 # set pgp_use_gpg_agent=no
