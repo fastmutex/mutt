@@ -1,0 +1,2289 @@
+m4trace:/usr/share/aclocal/longlong.m4:17: -1- AC_DEFUN([AC_TYPE_LONG_LONG_INT], [
+  AC_CACHE_CHECK([for long long int], [ac_cv_type_long_long_int],
+    [AC_LINK_IFELSE(
+       [_AC_TYPE_LONG_LONG_SNIPPET],
+       [dnl This catches a bug in Tandem NonStop Kernel (OSS) cc -O circa 2004.
+        dnl If cross compiling, assume the bug isn't important, since
+        dnl nobody cross compiles for this platform as far as we know.
+        AC_RUN_IFELSE(
+          [AC_LANG_PROGRAM(
+             [[@%:@include <limits.h>
+               @%:@ifndef LLONG_MAX
+               @%:@ define HALF \
+                        (1LL << (sizeof (long long int) * CHAR_BIT - 2))
+               @%:@ define LLONG_MAX (HALF - 1 + HALF)
+               @%:@endif]],
+             [[long long int n = 1;
+               int i;
+               for (i = 0; ; i++)
+                 {
+                   long long int m = n << i;
+                   if (m >> i != n)
+                     return 1;
+                   if (LLONG_MAX / 2 < m)
+                     break;
+                 }
+               return 0;]])],
+          [ac_cv_type_long_long_int=yes],
+          [ac_cv_type_long_long_int=no],
+          [ac_cv_type_long_long_int=yes])],
+       [ac_cv_type_long_long_int=no])])
+  if test $ac_cv_type_long_long_int = yes; then
+    AC_DEFINE([HAVE_LONG_LONG_INT], [1],
+      [Define to 1 if the system has the type `long long int'.])
+  fi
+])
+m4trace:/usr/share/aclocal/longlong.m4:63: -1- AC_DEFUN([AC_TYPE_UNSIGNED_LONG_LONG_INT], [
+  AC_CACHE_CHECK([for unsigned long long int],
+    [ac_cv_type_unsigned_long_long_int],
+    [AC_LINK_IFELSE(
+       [_AC_TYPE_LONG_LONG_SNIPPET],
+       [ac_cv_type_unsigned_long_long_int=yes],
+       [ac_cv_type_unsigned_long_long_int=no])])
+  if test $ac_cv_type_unsigned_long_long_int = yes; then
+    AC_DEFINE([HAVE_UNSIGNED_LONG_LONG_INT], [1],
+      [Define to 1 if the system has the type `unsigned long long int'.])
+  fi
+])
+m4trace:/usr/share/aclocal/longlong.m4:82: -1- AC_DEFUN([_AC_TYPE_LONG_LONG_SNIPPET], [
+  AC_LANG_PROGRAM(
+    [[/* For now, do not test the preprocessor; as of 2007 there are too many
+         implementations with broken preprocessors.  Perhaps this can
+         be revisited in 2012.  In the meantime, code should not expect
+         #if to work with literals wider than 32 bits.  */
+      /* Test literals.  */
+      long long int ll = 9223372036854775807ll;
+      long long int nll = -9223372036854775807LL;
+      unsigned long long int ull = 18446744073709551615ULL;
+      /* Test constant expressions.   */
+      typedef int a[((-9223372036854775807LL < 0 && 0 < 9223372036854775807ll)
+                     ? 1 : -1)];
+      typedef int b[(18446744073709551615ULL <= (unsigned long long int) -1
+                     ? 1 : -1)];
+      int i = 63;]],
+    [[/* Test availability of runtime routines for shift and division.  */
+      long long int llmax = 9223372036854775807ll;
+      unsigned long long int ullmax = 18446744073709551615ull;
+      return ((ll << 63) | (ll >> 63) | (ll < i) | (ll > i)
+              | (llmax / ll) | (llmax % ll)
+              | (ull << 63) | (ull >> 63) | (ull << i) | (ull >> i)
+              | (ullmax / ull) | (ullmax % ull));]])
+])
+m4trace:/usr/share/aclocal-1.11/amversion.m4:17: -1- AC_DEFUN([AM_AUTOMAKE_VERSION], [am__api_version='1.11'
+dnl Some users find AM_AUTOMAKE_VERSION and mistake it for a way to
+dnl require some minimum version.  Point them to the right macro.
+m4_if([$1], [1.11.6], [],
+      [AC_FATAL([Do not call $0, use AM_INIT_AUTOMAKE([$1]).])])dnl
+])
+m4trace:/usr/share/aclocal-1.11/amversion.m4:36: -1- AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION], [AM_AUTOMAKE_VERSION([1.11.6])dnl
+m4_ifndef([AC_AUTOCONF_VERSION],
+  [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
+_AM_AUTOCONF_VERSION(m4_defn([AC_AUTOCONF_VERSION]))])
+m4trace:/usr/share/aclocal-1.11/auxdir.m4:49: -1- AC_DEFUN([AM_AUX_DIR_EXPAND], [dnl Rely on autoconf to set up CDPATH properly.
+AC_PREREQ([2.50])dnl
+# expand $ac_aux_dir to an absolute path
+am_aux_dir=`cd $ac_aux_dir && pwd`
+])
+m4trace:/usr/share/aclocal-1.11/cond.m4:15: -1- AC_DEFUN([AM_CONDITIONAL], [AC_PREREQ(2.52)dnl
+ ifelse([$1], [TRUE],  [AC_FATAL([$0: invalid condition: $1])],
+	[$1], [FALSE], [AC_FATAL([$0: invalid condition: $1])])dnl
+AC_SUBST([$1_TRUE])dnl
+AC_SUBST([$1_FALSE])dnl
+_AM_SUBST_NOTMAKE([$1_TRUE])dnl
+_AM_SUBST_NOTMAKE([$1_FALSE])dnl
+m4_define([_AM_COND_VALUE_$1], [$2])dnl
+if $2; then
+  $1_TRUE=
+  $1_FALSE='#'
+else
+  $1_TRUE='#'
+  $1_FALSE=
+fi
+AC_CONFIG_COMMANDS_PRE(
+[if test -z "${$1_TRUE}" && test -z "${$1_FALSE}"; then
+  AC_MSG_ERROR([[conditional "$1" was never defined.
+Usually this means the macro was only invoked conditionally.]])
+fi])])
+m4trace:/usr/share/aclocal-1.11/depend.m4:28: -1- AC_DEFUN([_AM_DEPENDENCIES], [AC_REQUIRE([AM_SET_DEPDIR])dnl
+AC_REQUIRE([AM_OUTPUT_DEPENDENCY_COMMANDS])dnl
+AC_REQUIRE([AM_MAKE_INCLUDE])dnl
+AC_REQUIRE([AM_DEP_TRACK])dnl
+
+ifelse([$1], CC,   [depcc="$CC"   am_compiler_list=],
+       [$1], CXX,  [depcc="$CXX"  am_compiler_list=],
+       [$1], OBJC, [depcc="$OBJC" am_compiler_list='gcc3 gcc'],
+       [$1], UPC,  [depcc="$UPC"  am_compiler_list=],
+       [$1], GCJ,  [depcc="$GCJ"  am_compiler_list='gcc3 gcc'],
+                   [depcc="$$1"   am_compiler_list=])
+
+AC_CACHE_CHECK([dependency style of $depcc],
+               [am_cv_$1_dependencies_compiler_type],
+[if test -z "$AMDEP_TRUE" && test -f "$am_depcomp"; then
+  # We make a subdir and do the tests there.  Otherwise we can end up
+  # making bogus files that we don't know about and never remove.  For
+  # instance it was reported that on HP-UX the gcc test will end up
+  # making a dummy file named `D' -- because `-MD' means `put the output
+  # in D'.
+  rm -rf conftest.dir
+  mkdir conftest.dir
+  # Copy depcomp to subdir because otherwise we won't find it if we're
+  # using a relative directory.
+  cp "$am_depcomp" conftest.dir
+  cd conftest.dir
+  # We will build objects and dependencies in a subdirectory because
+  # it helps to detect inapplicable dependency modes.  For instance
+  # both Tru64's cc and ICC support -MD to output dependencies as a
+  # side effect of compilation, but ICC will put the dependencies in
+  # the current directory while Tru64 will put them in the object
+  # directory.
+  mkdir sub
+
+  am_cv_$1_dependencies_compiler_type=none
+  if test "$am_compiler_list" = ""; then
+     am_compiler_list=`sed -n ['s/^#*\([a-zA-Z0-9]*\))$/\1/p'] < ./depcomp`
+  fi
+  am__universal=false
+  m4_case([$1], [CC],
+    [case " $depcc " in #(
+     *\ -arch\ *\ -arch\ *) am__universal=true ;;
+     esac],
+    [CXX],
+    [case " $depcc " in #(
+     *\ -arch\ *\ -arch\ *) am__universal=true ;;
+     esac])
+
+  for depmode in $am_compiler_list; do
+    # Setup a source with many dependencies, because some compilers
+    # like to wrap large dependency lists on column 80 (with \), and
+    # we should not choose a depcomp mode which is confused by this.
+    #
+    # We need to recreate these files for each test, as the compiler may
+    # overwrite some of them when testing with obscure command lines.
+    # This happens at least with the AIX C compiler.
+    : > sub/conftest.c
+    for i in 1 2 3 4 5 6; do
+      echo '#include "conftst'$i'.h"' >> sub/conftest.c
+      # Using `: > sub/conftst$i.h' creates only sub/conftst1.h with
+      # Solaris 8's {/usr,}/bin/sh.
+      touch sub/conftst$i.h
+    done
+    echo "${am__include} ${am__quote}sub/conftest.Po${am__quote}" > confmf
+
+    # We check with `-c' and `-o' for the sake of the "dashmstdout"
+    # mode.  It turns out that the SunPro C++ compiler does not properly
+    # handle `-M -o', and we need to detect this.  Also, some Intel
+    # versions had trouble with output in subdirs
+    am__obj=sub/conftest.${OBJEXT-o}
+    am__minus_obj="-o $am__obj"
+    case $depmode in
+    gcc)
+      # This depmode causes a compiler race in universal mode.
+      test "$am__universal" = false || continue
+      ;;
+    nosideeffect)
+      # after this tag, mechanisms are not by side-effect, so they'll
+      # only be used when explicitly requested
+      if test "x$enable_dependency_tracking" = xyes; then
+	continue
+      else
+	break
+      fi
+      ;;
+    msvc7 | msvc7msys | msvisualcpp | msvcmsys)
+      # This compiler won't grok `-c -o', but also, the minuso test has
+      # not run yet.  These depmodes are late enough in the game, and
+      # so weak that their functioning should not be impacted.
+      am__obj=conftest.${OBJEXT-o}
+      am__minus_obj=
+      ;;
+    none) break ;;
+    esac
+    if depmode=$depmode \
+       source=sub/conftest.c object=$am__obj \
+       depfile=sub/conftest.Po tmpdepfile=sub/conftest.TPo \
+       $SHELL ./depcomp $depcc -c $am__minus_obj sub/conftest.c \
+         >/dev/null 2>conftest.err &&
+       grep sub/conftst1.h sub/conftest.Po > /dev/null 2>&1 &&
+       grep sub/conftst6.h sub/conftest.Po > /dev/null 2>&1 &&
+       grep $am__obj sub/conftest.Po > /dev/null 2>&1 &&
+       ${MAKE-make} -s -f confmf > /dev/null 2>&1; then
+      # icc doesn't choke on unknown options, it will just issue warnings
+      # or remarks (even with -Werror).  So we grep stderr for any message
+      # that says an option was ignored or not supported.
+      # When given -MP, icc 7.0 and 7.1 complain thusly:
+      #   icc: Command line warning: ignoring option '-M'; no argument required
+      # The diagnosis changed in icc 8.0:
+      #   icc: Command line remark: option '-MP' not supported
+      if (grep 'ignoring option' conftest.err ||
+          grep 'not supported' conftest.err) >/dev/null 2>&1; then :; else
+        am_cv_$1_dependencies_compiler_type=$depmode
+        break
+      fi
+    fi
+  done
+
+  cd ..
+  rm -rf conftest.dir
+else
+  am_cv_$1_dependencies_compiler_type=none
+fi
+])
+AC_SUBST([$1DEPMODE], [depmode=$am_cv_$1_dependencies_compiler_type])
+AM_CONDITIONAL([am__fastdep$1], [
+  test "x$enable_dependency_tracking" != xno \
+  && test "$am_cv_$1_dependencies_compiler_type" = gcc3])
+])
+m4trace:/usr/share/aclocal-1.11/depend.m4:164: -1- AC_DEFUN([AM_SET_DEPDIR], [AC_REQUIRE([AM_SET_LEADING_DOT])dnl
+AC_SUBST([DEPDIR], ["${am__leading_dot}deps"])dnl
+])
+m4trace:/usr/share/aclocal-1.11/depend.m4:172: -1- AC_DEFUN([AM_DEP_TRACK], [AC_ARG_ENABLE(dependency-tracking,
+[  --disable-dependency-tracking  speeds up one-time build
+  --enable-dependency-tracking   do not reject slow dependency extractors])
+if test "x$enable_dependency_tracking" != xno; then
+  am_depcomp="$ac_aux_dir/depcomp"
+  AMDEPBACKSLASH='\'
+  am__nodep='_no'
+fi
+AM_CONDITIONAL([AMDEP], [test "x$enable_dependency_tracking" != xno])
+AC_SUBST([AMDEPBACKSLASH])dnl
+_AM_SUBST_NOTMAKE([AMDEPBACKSLASH])dnl
+AC_SUBST([am__nodep])dnl
+_AM_SUBST_NOTMAKE([am__nodep])dnl
+])
+m4trace:/usr/share/aclocal-1.11/depout.m4:14: -1- AC_DEFUN([_AM_OUTPUT_DEPENDENCY_COMMANDS], [{
+  # Autoconf 2.62 quotes --file arguments for eval, but not when files
+  # are listed without --file.  Let's play safe and only enable the eval
+  # if we detect the quoting.
+  case $CONFIG_FILES in
+  *\'*) eval set x "$CONFIG_FILES" ;;
+  *)   set x $CONFIG_FILES ;;
+  esac
+  shift
+  for mf
+  do
+    # Strip MF so we end up with the name of the file.
+    mf=`echo "$mf" | sed -e 's/:.*$//'`
+    # Check whether this is an Automake generated Makefile or not.
+    # We used to match only the files named `Makefile.in', but
+    # some people rename them; so instead we look at the file content.
+    # Grep'ing the first line is not enough: some people post-process
+    # each Makefile.in and add a new line on top of each file to say so.
+    # Grep'ing the whole file is not good either: AIX grep has a line
+    # limit of 2048, but all sed's we know have understand at least 4000.
+    if sed -n 's,^#.*generated by automake.*,X,p' "$mf" | grep X >/dev/null 2>&1; then
+      dirpart=`AS_DIRNAME("$mf")`
+    else
+      continue
+    fi
+    # Extract the definition of DEPDIR, am__include, and am__quote
+    # from the Makefile without running `make'.
+    DEPDIR=`sed -n 's/^DEPDIR = //p' < "$mf"`
+    test -z "$DEPDIR" && continue
+    am__include=`sed -n 's/^am__include = //p' < "$mf"`
+    test -z "am__include" && continue
+    am__quote=`sed -n 's/^am__quote = //p' < "$mf"`
+    # When using ansi2knr, U may be empty or an underscore; expand it
+    U=`sed -n 's/^U = //p' < "$mf"`
+    # Find all dependency output files, they are included files with
+    # $(DEPDIR) in their names.  We invoke sed twice because it is the
+    # simplest approach to changing $(DEPDIR) to its actual value in the
+    # expansion.
+    for file in `sed -n "
+      s/^$am__include $am__quote\(.*(DEPDIR).*\)$am__quote"'$/\1/p' <"$mf" | \
+	 sed -e 's/\$(DEPDIR)/'"$DEPDIR"'/g' -e 's/\$U/'"$U"'/g'`; do
+      # Make sure the directory exists.
+      test -f "$dirpart/$file" && continue
+      fdir=`AS_DIRNAME(["$file"])`
+      AS_MKDIR_P([$dirpart/$fdir])
+      # echo "creating $dirpart/$file"
+      echo '# dummy' > "$dirpart/$file"
+    done
+  done
+}
+])
+m4trace:/usr/share/aclocal-1.11/depout.m4:75: -1- AC_DEFUN([AM_OUTPUT_DEPENDENCY_COMMANDS], [AC_CONFIG_COMMANDS([depfiles],
+     [test x"$AMDEP_TRUE" != x"" || _AM_OUTPUT_DEPENDENCY_COMMANDS],
+     [AMDEP_TRUE="$AMDEP_TRUE" ac_aux_dir="$ac_aux_dir"])
+])
+m4trace:/usr/share/aclocal-1.11/init.m4:26: -1- AC_DEFUN([AM_INIT_AUTOMAKE], [AC_PREREQ([2.62])dnl
+dnl Autoconf wants to disallow AM_ names.  We explicitly allow
+dnl the ones we care about.
+m4_pattern_allow([^AM_[A-Z]+FLAGS$])dnl
+AC_REQUIRE([AM_SET_CURRENT_AUTOMAKE_VERSION])dnl
+AC_REQUIRE([AC_PROG_INSTALL])dnl
+if test "`cd $srcdir && pwd`" != "`pwd`"; then
+  # Use -I$(srcdir) only when $(srcdir) != ., so that make's output
+  # is not polluted with repeated "-I."
+  AC_SUBST([am__isrc], [' -I$(srcdir)'])_AM_SUBST_NOTMAKE([am__isrc])dnl
+  # test to see if srcdir already configured
+  if test -f $srcdir/config.status; then
+    AC_MSG_ERROR([source directory already configured; run "make distclean" there first])
+  fi
+fi
+
+# test whether we have cygpath
+if test -z "$CYGPATH_W"; then
+  if (cygpath --version) >/dev/null 2>/dev/null; then
+    CYGPATH_W='cygpath -w'
+  else
+    CYGPATH_W=echo
+  fi
+fi
+AC_SUBST([CYGPATH_W])
+
+# Define the identity of the package.
+dnl Distinguish between old-style and new-style calls.
+m4_ifval([$2],
+[m4_ifval([$3], [_AM_SET_OPTION([no-define])])dnl
+ AC_SUBST([PACKAGE], [$1])dnl
+ AC_SUBST([VERSION], [$2])],
+[_AM_SET_OPTIONS([$1])dnl
+dnl Diagnose old-style AC_INIT with new-style AM_AUTOMAKE_INIT.
+m4_if(m4_ifdef([AC_PACKAGE_NAME], 1)m4_ifdef([AC_PACKAGE_VERSION], 1), 11,,
+  [m4_fatal([AC_INIT should be called with package and version arguments])])dnl
+ AC_SUBST([PACKAGE], ['AC_PACKAGE_TARNAME'])dnl
+ AC_SUBST([VERSION], ['AC_PACKAGE_VERSION'])])dnl
+
+_AM_IF_OPTION([no-define],,
+[AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE", [Name of package])
+ AC_DEFINE_UNQUOTED(VERSION, "$VERSION", [Version number of package])])dnl
+
+# Some tools Automake needs.
+AC_REQUIRE([AM_SANITY_CHECK])dnl
+AC_REQUIRE([AC_ARG_PROGRAM])dnl
+AM_MISSING_PROG(ACLOCAL, aclocal-${am__api_version})
+AM_MISSING_PROG(AUTOCONF, autoconf)
+AM_MISSING_PROG(AUTOMAKE, automake-${am__api_version})
+AM_MISSING_PROG(AUTOHEADER, autoheader)
+AM_MISSING_PROG(MAKEINFO, makeinfo)
+AC_REQUIRE([AM_PROG_INSTALL_SH])dnl
+AC_REQUIRE([AM_PROG_INSTALL_STRIP])dnl
+AC_REQUIRE([AM_PROG_MKDIR_P])dnl
+# We need awk for the "check" target.  The system "awk" is bad on
+# some platforms.
+AC_REQUIRE([AC_PROG_AWK])dnl
+AC_REQUIRE([AC_PROG_MAKE_SET])dnl
+AC_REQUIRE([AM_SET_LEADING_DOT])dnl
+_AM_IF_OPTION([tar-ustar], [_AM_PROG_TAR([ustar])],
+	      [_AM_IF_OPTION([tar-pax], [_AM_PROG_TAR([pax])],
+			     [_AM_PROG_TAR([v7])])])
+_AM_IF_OPTION([no-dependencies],,
+[AC_PROVIDE_IFELSE([AC_PROG_CC],
+		  [_AM_DEPENDENCIES(CC)],
+		  [define([AC_PROG_CC],
+			  defn([AC_PROG_CC])[_AM_DEPENDENCIES(CC)])])dnl
+AC_PROVIDE_IFELSE([AC_PROG_CXX],
+		  [_AM_DEPENDENCIES(CXX)],
+		  [define([AC_PROG_CXX],
+			  defn([AC_PROG_CXX])[_AM_DEPENDENCIES(CXX)])])dnl
+AC_PROVIDE_IFELSE([AC_PROG_OBJC],
+		  [_AM_DEPENDENCIES(OBJC)],
+		  [define([AC_PROG_OBJC],
+			  defn([AC_PROG_OBJC])[_AM_DEPENDENCIES(OBJC)])])dnl
+])
+_AM_IF_OPTION([silent-rules], [AC_REQUIRE([AM_SILENT_RULES])])dnl
+dnl The `parallel-tests' driver may need to know about EXEEXT, so add the
+dnl `am__EXEEXT' conditional if _AM_COMPILER_EXEEXT was seen.  This macro
+dnl is hooked onto _AC_COMPILER_EXEEXT early, see below.
+AC_CONFIG_COMMANDS_PRE(dnl
+[m4_provide_if([_AM_COMPILER_EXEEXT],
+  [AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])])])dnl
+])
+m4trace:/usr/share/aclocal-1.11/init.m4:126: -1- AC_DEFUN([_AC_AM_CONFIG_HEADER_HOOK], [# Compute $1's index in $config_headers.
+_am_arg=$1
+_am_stamp_count=1
+for _am_header in $config_headers :; do
+  case $_am_header in
+    $_am_arg | $_am_arg:* )
+      break ;;
+    * )
+      _am_stamp_count=`expr $_am_stamp_count + 1` ;;
+  esac
+done
+echo "timestamp for $_am_arg" >`AS_DIRNAME(["$_am_arg"])`/stamp-h[]$_am_stamp_count])
+m4trace:/usr/share/aclocal-1.11/install-sh.m4:14: -1- AC_DEFUN([AM_PROG_INSTALL_SH], [AC_REQUIRE([AM_AUX_DIR_EXPAND])dnl
+if test x"${install_sh}" != xset; then
+  case $am_aux_dir in
+  *\ * | *\	*)
+    install_sh="\${SHELL} '$am_aux_dir/install-sh'" ;;
+  *)
+    install_sh="\${SHELL} $am_aux_dir/install-sh"
+  esac
+fi
+AC_SUBST(install_sh)])
+m4trace:/usr/share/aclocal-1.11/lead-dot.m4:12: -1- AC_DEFUN([AM_SET_LEADING_DOT], [rm -rf .tst 2>/dev/null
+mkdir .tst 2>/dev/null
+if test -d .tst; then
+  am__leading_dot=.
+else
+  am__leading_dot=_
+fi
+rmdir .tst 2>/dev/null
+AC_SUBST([am__leading_dot])])
+m4trace:/usr/share/aclocal-1.11/make.m4:14: -1- AC_DEFUN([AM_MAKE_INCLUDE], [am_make=${MAKE-make}
+cat > confinc << 'END'
+am__doit:
+	@echo this is the am__doit target
+.PHONY: am__doit
+END
+# If we don't find an include directive, just comment out the code.
+AC_MSG_CHECKING([for style of include used by $am_make])
+am__include="#"
+am__quote=
+_am_result=none
+# First try GNU make style include.
+echo "include confinc" > confmf
+# Ignore all kinds of additional output from `make'.
+case `$am_make -s -f confmf 2> /dev/null` in #(
+*the\ am__doit\ target*)
+  am__include=include
+  am__quote=
+  _am_result=GNU
+  ;;
+esac
+# Now try BSD make style include.
+if test "$am__include" = "#"; then
+   echo '.include "confinc"' > confmf
+   case `$am_make -s -f confmf 2> /dev/null` in #(
+   *the\ am__doit\ target*)
+     am__include=.include
+     am__quote="\""
+     _am_result=BSD
+     ;;
+   esac
+fi
+AC_SUBST([am__include])
+AC_SUBST([am__quote])
+AC_MSG_RESULT([$_am_result])
+rm -f confinc confmf
+])
+m4trace:/usr/share/aclocal-1.11/missing.m4:14: -1- AC_DEFUN([AM_MISSING_PROG], [AC_REQUIRE([AM_MISSING_HAS_RUN])
+$1=${$1-"${am_missing_run}$2"}
+AC_SUBST($1)])
+m4trace:/usr/share/aclocal-1.11/missing.m4:24: -1- AC_DEFUN([AM_MISSING_HAS_RUN], [AC_REQUIRE([AM_AUX_DIR_EXPAND])dnl
+AC_REQUIRE_AUX_FILE([missing])dnl
+if test x"${MISSING+set}" != xset; then
+  case $am_aux_dir in
+  *\ * | *\	*)
+    MISSING="\${SHELL} \"$am_aux_dir/missing\"" ;;
+  *)
+    MISSING="\${SHELL} $am_aux_dir/missing" ;;
+  esac
+fi
+# Use eval to expand $SHELL
+if eval "$MISSING --run true"; then
+  am_missing_run="$MISSING --run "
+else
+  am_missing_run=
+  AC_MSG_WARN([`missing' script is too old or missing])
+fi
+])
+m4trace:/usr/share/aclocal-1.11/mkdirp.m4:14: -1- AC_DEFUN([AM_PROG_MKDIR_P], [AC_PREREQ([2.60])dnl
+AC_REQUIRE([AC_PROG_MKDIR_P])dnl
+dnl Automake 1.8 to 1.9.6 used to define mkdir_p.  We now use MKDIR_P,
+dnl while keeping a definition of mkdir_p for backward compatibility.
+dnl @MKDIR_P@ is magic: AC_OUTPUT adjusts its value for each Makefile.
+dnl However we cannot define mkdir_p as $(MKDIR_P) for the sake of
+dnl Makefile.ins that do not define MKDIR_P, so we do our own
+dnl adjustment using top_builddir (which is defined more often than
+dnl MKDIR_P).
+AC_SUBST([mkdir_p], ["$MKDIR_P"])dnl
+case $mkdir_p in
+  [[\\/$]]* | ?:[[\\/]]*) ;;
+  */*) mkdir_p="\$(top_builddir)/$mkdir_p" ;;
+esac
+])
+m4trace:/usr/share/aclocal-1.11/options.m4:14: -1- AC_DEFUN([_AM_MANGLE_OPTION], [[_AM_OPTION_]m4_bpatsubst($1, [[^a-zA-Z0-9_]], [_])])
+m4trace:/usr/share/aclocal-1.11/options.m4:20: -1- AC_DEFUN([_AM_SET_OPTION], [m4_define(_AM_MANGLE_OPTION([$1]), 1)])
+m4trace:/usr/share/aclocal-1.11/options.m4:26: -1- AC_DEFUN([_AM_SET_OPTIONS], [m4_foreach_w([_AM_Option], [$1], [_AM_SET_OPTION(_AM_Option)])])
+m4trace:/usr/share/aclocal-1.11/options.m4:32: -1- AC_DEFUN([_AM_IF_OPTION], [m4_ifset(_AM_MANGLE_OPTION([$1]), [$2], [$3])])
+m4trace:/usr/share/aclocal-1.11/runlog.m4:14: -1- AC_DEFUN([AM_RUN_LOG], [{ echo "$as_me:$LINENO: $1" >&AS_MESSAGE_LOG_FD
+   ($1) >&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&AS_MESSAGE_LOG_FD
+   (exit $ac_status); }])
+m4trace:/usr/share/aclocal-1.11/sanity.m4:14: -1- AC_DEFUN([AM_SANITY_CHECK], [AC_MSG_CHECKING([whether build environment is sane])
+# Just in case
+sleep 1
+echo timestamp > conftest.file
+# Reject unsafe characters in $srcdir or the absolute working directory
+# name.  Accept space and tab only in the latter.
+am_lf='
+'
+case `pwd` in
+  *[[\\\"\#\$\&\'\`$am_lf]]*)
+    AC_MSG_ERROR([unsafe absolute working directory name]);;
+esac
+case $srcdir in
+  *[[\\\"\#\$\&\'\`$am_lf\ \	]]*)
+    AC_MSG_ERROR([unsafe srcdir value: `$srcdir']);;
+esac
+
+# Do `set' in a subshell so we don't clobber the current shell's
+# arguments.  Must try -L first in case configure is actually a
+# symlink; some systems play weird games with the mod time of symlinks
+# (eg FreeBSD returns the mod time of the symlink's containing
+# directory).
+if (
+   set X `ls -Lt "$srcdir/configure" conftest.file 2> /dev/null`
+   if test "$[*]" = "X"; then
+      # -L didn't work.
+      set X `ls -t "$srcdir/configure" conftest.file`
+   fi
+   rm -f conftest.file
+   if test "$[*]" != "X $srcdir/configure conftest.file" \
+      && test "$[*]" != "X conftest.file $srcdir/configure"; then
+
+      # If neither matched, then we have a broken ls.  This can happen
+      # if, for instance, CONFIG_SHELL is bash and it inherits a
+      # broken ls alias from the environment.  This has actually
+      # happened.  Such a system could not be considered "sane".
+      AC_MSG_ERROR([ls -t appears to fail.  Make sure there is not a broken
+alias in your environment])
+   fi
+
+   test "$[2]" = conftest.file
+   )
+then
+   # Ok.
+   :
+else
+   AC_MSG_ERROR([newly created file is older than distributed files!
+Check your system clock])
+fi
+AC_MSG_RESULT(yes)])
+m4trace:/usr/share/aclocal-1.11/silent.m4:14: -1- AC_DEFUN([AM_SILENT_RULES], [AC_ARG_ENABLE([silent-rules],
+[  --enable-silent-rules          less verbose build output (undo: `make V=1')
+  --disable-silent-rules         verbose build output (undo: `make V=0')])
+case $enable_silent_rules in
+yes) AM_DEFAULT_VERBOSITY=0;;
+no)  AM_DEFAULT_VERBOSITY=1;;
+*)   AM_DEFAULT_VERBOSITY=m4_if([$1], [yes], [0], [1]);;
+esac
+dnl
+dnl A few `make' implementations (e.g., NonStop OS and NextStep)
+dnl do not support nested variable expansions.
+dnl See automake bug#9928 and bug#10237.
+am_make=${MAKE-make}
+AC_CACHE_CHECK([whether $am_make supports nested variables],
+   [am_cv_make_support_nested_variables],
+   [if AS_ECHO([['TRUE=$(BAR$(V))
+BAR0=false
+BAR1=true
+V=1
+am__doit:
+	@$(TRUE)
+.PHONY: am__doit']]) | $am_make -f - >/dev/null 2>&1; then
+  am_cv_make_support_nested_variables=yes
+else
+  am_cv_make_support_nested_variables=no
+fi])
+if test $am_cv_make_support_nested_variables = yes; then
+  dnl Using `$V' instead of `$(V)' breaks IRIX make.
+  AM_V='$(V)'
+  AM_DEFAULT_V='$(AM_DEFAULT_VERBOSITY)'
+else
+  AM_V=$AM_DEFAULT_VERBOSITY
+  AM_DEFAULT_V=$AM_DEFAULT_VERBOSITY
+fi
+AC_SUBST([AM_V])dnl
+AM_SUBST_NOTMAKE([AM_V])dnl
+AC_SUBST([AM_DEFAULT_V])dnl
+AM_SUBST_NOTMAKE([AM_DEFAULT_V])dnl
+AC_SUBST([AM_DEFAULT_VERBOSITY])dnl
+AM_BACKSLASH='\'
+AC_SUBST([AM_BACKSLASH])dnl
+_AM_SUBST_NOTMAKE([AM_BACKSLASH])dnl
+])
+m4trace:/usr/share/aclocal-1.11/strip.m4:19: -1- AC_DEFUN([AM_PROG_INSTALL_STRIP], [AC_REQUIRE([AM_PROG_INSTALL_SH])dnl
+# Installed binaries are usually stripped using `strip' when the user
+# run `make install-strip'.  However `strip' might not be the right
+# tool to use in cross-compilation environments, therefore Automake
+# will honor the `STRIP' environment variable to overrule this program.
+dnl Don't test for $cross_compiling = yes, because it might be `maybe'.
+if test "$cross_compiling" != no; then
+  AC_CHECK_TOOL([STRIP], [strip], :)
+fi
+INSTALL_STRIP_PROGRAM="\$(install_sh) -c -s"
+AC_SUBST([INSTALL_STRIP_PROGRAM])])
+m4trace:/usr/share/aclocal-1.11/substnot.m4:14: -1- AC_DEFUN([_AM_SUBST_NOTMAKE])
+m4trace:/usr/share/aclocal-1.11/substnot.m4:19: -1- AC_DEFUN([AM_SUBST_NOTMAKE], [_AM_SUBST_NOTMAKE($@)])
+m4trace:/usr/share/aclocal-1.11/tar.m4:24: -1- AC_DEFUN([_AM_PROG_TAR], [# Always define AMTAR for backward compatibility.  Yes, it's still used
+# in the wild :-(  We should find a proper way to deprecate it ...
+AC_SUBST([AMTAR], ['$${TAR-tar}'])
+m4_if([$1], [v7],
+     [am__tar='$${TAR-tar} chof - "$$tardir"' am__untar='$${TAR-tar} xf -'],
+     [m4_case([$1], [ustar],, [pax],,
+              [m4_fatal([Unknown tar format])])
+AC_MSG_CHECKING([how to create a $1 tar archive])
+# Loop over all known methods to create a tar archive until one works.
+_am_tools='gnutar m4_if([$1], [ustar], [plaintar]) pax cpio none'
+_am_tools=${am_cv_prog_tar_$1-$_am_tools}
+# Do not fold the above two line into one, because Tru64 sh and
+# Solaris sh will not grok spaces in the rhs of `-'.
+for _am_tool in $_am_tools
+do
+  case $_am_tool in
+  gnutar)
+    for _am_tar in tar gnutar gtar;
+    do
+      AM_RUN_LOG([$_am_tar --version]) && break
+    done
+    am__tar="$_am_tar --format=m4_if([$1], [pax], [posix], [$1]) -chf - "'"$$tardir"'
+    am__tar_="$_am_tar --format=m4_if([$1], [pax], [posix], [$1]) -chf - "'"$tardir"'
+    am__untar="$_am_tar -xf -"
+    ;;
+  plaintar)
+    # Must skip GNU tar: if it does not support --format= it doesn't create
+    # ustar tarball either.
+    (tar --version) >/dev/null 2>&1 && continue
+    am__tar='tar chf - "$$tardir"'
+    am__tar_='tar chf - "$tardir"'
+    am__untar='tar xf -'
+    ;;
+  pax)
+    am__tar='pax -L -x $1 -w "$$tardir"'
+    am__tar_='pax -L -x $1 -w "$tardir"'
+    am__untar='pax -r'
+    ;;
+  cpio)
+    am__tar='find "$$tardir" -print | cpio -o -H $1 -L'
+    am__tar_='find "$tardir" -print | cpio -o -H $1 -L'
+    am__untar='cpio -i -H $1 -d'
+    ;;
+  none)
+    am__tar=false
+    am__tar_=false
+    am__untar=false
+    ;;
+  esac
+
+  # If the value was cached, stop now.  We just wanted to have am__tar
+  # and am__untar set.
+  test -n "${am_cv_prog_tar_$1}" && break
+
+  # tar/untar a dummy directory, and stop if the command works
+  rm -rf conftest.dir
+  mkdir conftest.dir
+  echo GrepMe > conftest.dir/file
+  AM_RUN_LOG([tardir=conftest.dir && eval $am__tar_ >conftest.tar])
+  rm -rf conftest.dir
+  if test -s conftest.tar; then
+    AM_RUN_LOG([$am__untar <conftest.tar])
+    grep GrepMe conftest.dir/file >/dev/null 2>&1 && break
+  fi
+done
+rm -rf conftest.dir
+
+AC_CACHE_VAL([am_cv_prog_tar_$1], [am_cv_prog_tar_$1=$_am_tool])
+AC_MSG_RESULT([$am_cv_prog_tar_$1])])
+AC_SUBST([am__tar])
+AC_SUBST([am__untar])
+])
+m4trace:m4/codeset.m4:5: -1- AC_DEFUN([MUTT_AM_LANGINFO_CODESET], [
+  AC_CACHE_CHECK([for nl_langinfo and CODESET], am_cv_langinfo_codeset,
+    [AC_TRY_LINK([#include <langinfo.h>],
+      [char* cs = nl_langinfo(CODESET);],
+      am_cv_langinfo_codeset=yes,
+      am_cv_langinfo_codeset=no)
+    ])
+  if test $am_cv_langinfo_codeset = yes; then
+    AC_DEFINE(HAVE_LANGINFO_CODESET, 1,
+      [Define if you have <langinfo.h> and nl_langinfo(CODESET).])
+  fi
+])
+m4trace:m4/curslib.m4:4: -1- AC_DEFUN([CF_CURSES_LIBS], [
+AC_CHECK_FUNC(initscr,,[
+case $host_os in #(vi
+freebsd*) #(vi
+	AC_CHECK_LIB(mytinfo,tgoto,[LIBS="-lmytinfo $LIBS"])
+	;;
+hpux10.*|hpux11.*)
+	AC_CHECK_LIB(cur_colr,initscr,[
+		LIBS="-lcur_colr $LIBS"
+		CFLAGS="-I/usr/include/curses_colr $CFLAGS"
+		ac_cv_func_initscr=yes
+		],[
+	AC_CHECK_LIB(Hcurses,initscr,[
+		# HP's header uses __HP_CURSES, but user claims _HP_CURSES.
+		LIBS="-lHcurses $LIBS"
+		CFLAGS="-D__HP_CURSES -D_HP_CURSES $CFLAGS"
+		ac_cv_func_initscr=yes
+		])])
+	;;
+linux*) # Suse Linux does not follow /usr/lib convention
+	LIBS="$LIBS -L/lib"
+	;;
+esac
+
+if test ".$With5lib" != ".no" ; then
+if test -d /usr/5lib ; then
+	# SunOS 3.x or 4.x
+	CPPFLAGS="$CPPFLAGS -I/usr/5include"
+	LIBS="$LIBS -L/usr/5lib"
+fi
+fi
+
+if test ".$ac_cv_func_initscr" != .yes ; then
+	cf_save_LIBS="$LIBS"
+	cf_term_lib=""
+	cf_curs_lib=""
+
+	# Check for library containing tgoto.  Do this before curses library
+	# because it may be needed to link the test-case for initscr.
+	AC_CHECK_FUNC(tgoto,[cf_term_lib=predefined],[
+		for cf_term_lib in termcap termlib unknown
+		do
+			AC_CHECK_LIB($cf_term_lib,tgoto,[break])
+		done
+	])
+
+	# Check for library containing initscr
+	test "$cf_term_lib" != predefined && test "$cf_term_lib" != unknown && LIBS="-l$cf_term_lib $cf_save_LIBS"
+	for cf_curs_lib in cursesX curses ncurses xcurses jcurses unknown
+	do
+		AC_CHECK_LIB($cf_curs_lib,initscr,[break])
+	done
+	test $cf_curs_lib = unknown && AC_ERROR(no curses library found)
+
+	LIBS="-l$cf_curs_lib $cf_save_LIBS"
+	if test "$cf_term_lib" = unknown ; then
+		AC_MSG_CHECKING(if we can link with $cf_curs_lib library)
+		AC_TRY_LINK([#include <${cf_cv_ncurses_header-curses.h}>],
+			[initscr()],
+			[cf_result=yes],
+			[cf_result=no])
+		AC_MSG_RESULT($cf_result)
+		test $cf_result = no && AC_ERROR(Cannot link curses library)
+	elif test "$cf_term_lib" != predefined ; then
+		AC_MSG_CHECKING(if we need both $cf_curs_lib and $cf_term_lib libraries)
+		AC_TRY_LINK([#include <${cf_cv_ncurses_header-curses.h}>],
+			[initscr(); tgoto((char *)0, 0, 0);],
+			[cf_result=no],
+			[
+			LIBS="-l$cf_curs_lib -l$cf_term_lib $cf_save_LIBS"
+			AC_TRY_LINK([#include <${cf_cv_ncurses_header-curses.h}>],
+				[initscr()],
+				[cf_result=yes],
+				[cf_result=error])
+			])
+		AC_MSG_RESULT($cf_result)
+	fi
+fi
+
+])])
+m4trace:m4/funcdecl.m4:10: -1- AC_DEFUN([CF_CHECK_FUNCDECL], [
+AC_MSG_CHECKING([for $2 declaration])
+AC_CACHE_VAL(ac_cv_func_decl_$2,
+[AC_TRY_COMPILE([$1],
+[#ifndef ${ac_func}
+extern	int	${ac_func}();
+#endif],[
+AC_TRY_COMPILE([$1],
+[#ifndef ${ac_func}
+int	(*p)() = ${ac_func};
+#endif],[
+eval "ac_cv_func_decl_$2=yes"],[
+eval "ac_cv_func_decl_$2=no"])],[
+eval "ac_cv_func_decl_$2=yes"])])
+if eval "test \"`echo '$ac_cv_func_'decl_$2`\" = yes"; then
+  AC_MSG_RESULT(yes)
+  ifelse([$3], , :, [$3])
+else
+  AC_MSG_RESULT(no)
+ifelse([$4], , , [$4
+])dnl
+fi
+])
+m4trace:m4/funcdecl.m4:39: -1- AC_DEFUN([CF_CHECK_FUNCDECLS], [for ac_func in $2
+do
+CF_CHECK_FUNCDECL([$1], $ac_func,
+[
+  CF_UPPER(ac_tr_func,HAVE_$ac_func)
+  AC_DEFINE_UNQUOTED($ac_tr_func) $3],
+[$4])dnl
+dnl [$3],
+dnl [
+dnl   CF_UPPER(ac_tr_func,DECL_$ac_func)
+dnl   AC_DEFINE_UNQUOTED($ac_tr_func) $4])dnl
+done
+])
+m4trace:m4/funcdecl.m4:56: -1- AC_DEFUN([CF_UPPER], [
+changequote(,)dnl
+$1=`echo $2 | tr '[a-z]' '[A-Z]'`
+changequote([,])dnl
+])
+m4trace:m4/funcs.m4:5: -1- AC_DEFUN([XIPH_FUNC_VA_COPY], [dnl
+AC_MSG_CHECKING([for va_copy])
+AC_TRY_LINK([#include <stdarg.h>], [va_list ap1, ap2; va_copy(ap1, ap2);],
+  AC_MSG_RESULT([va_copy]),
+  [dnl
+  AH_TEMPLATE([va_copy], [define if va_copy is not available])
+  AC_TRY_LINK([#include <stdarg.h>], [va_list ap1, ap2; __va_copy(ap1, ap2);],
+    [dnl
+    AC_DEFINE([va_copy], [__va_copy])
+    AC_MSG_RESULT([__va_copy])],
+    [dnl
+    AC_DEFINE([va_copy(dest,src)], [memcpy(&dest,&src,sizeof(va_list))])
+    AC_MSG_RESULT([memcpy])
+    ])
+  ])
+])
+m4trace:m4/gettext.m4:49: -1- AC_DEFUN([MUTT_AM_WITH_NLS], [AC_MSG_CHECKING([whether NLS is requested])
+    dnl Default is enabled NLS
+    AC_ARG_ENABLE(nls,
+      AC_HELP_STRING([--disable-nls], [Do not use Native Language Support]),
+      USE_NLS=$enableval, USE_NLS=yes)
+    AC_MSG_RESULT($USE_NLS)
+    AC_SUBST(USE_NLS)
+
+    BUILD_INCLUDED_LIBINTL=no
+    USE_INCLUDED_LIBINTL=no
+    INTLLIBS=
+
+    dnl If we use NLS figure out what method
+    if test "$USE_NLS" = "yes"; then
+      AC_DEFINE(ENABLE_NLS, 1,
+        [Define to 1 if translation of program messages to the user's native language
+   is requested.])
+      AC_MSG_CHECKING([whether included gettext is requested])
+      AC_ARG_WITH(included-gettext,
+        AC_HELP_STRING([--with-included-gettext], [Use the GNU gettext library included here]),
+        nls_cv_force_use_gnu_gettext=$withval,
+        nls_cv_force_use_gnu_gettext=no)
+      AC_MSG_RESULT($nls_cv_force_use_gnu_gettext)
+
+      nls_cv_use_gnu_gettext="$nls_cv_force_use_gnu_gettext"
+      if test "$nls_cv_force_use_gnu_gettext" != "yes"; then
+        dnl User does not insist on using GNU NLS library.  Figure out what
+        dnl to use.  If GNU gettext is available we use this.  Else we have
+        dnl to fall back to GNU NLS library.
+	CATOBJEXT=NONE
+
+        dnl Add a version number to the cache macros.
+        define(gt_cv_func_gnugettext_libc, [gt_cv_func_gnugettext]ifelse([$2], need-ngettext, 2, 1)[_libc])
+        define(gt_cv_func_gnugettext_libintl, [gt_cv_func_gnugettext]ifelse([$2], need-ngettext, 2, 1)[_libintl])
+
+	AC_CHECK_HEADER(libintl.h,
+	  [AC_CACHE_CHECK([for GNU gettext in libc], gt_cv_func_gnugettext_libc,
+	    [AC_TRY_LINK([#include <libintl.h>
+extern int _nl_msg_cat_cntr;],
+	       [bindtextdomain ("", "");
+return (int) gettext ("")]ifelse([$2], need-ngettext, [ + (int) ngettext ("", "", 0)], [])[ + _nl_msg_cat_cntr],
+	       gt_cv_func_gnugettext_libc=yes,
+	       gt_cv_func_gnugettext_libc=no)])
+
+	   if test "$gt_cv_func_gnugettext_libc" != "yes"; then
+	     AC_CACHE_CHECK([for GNU gettext in libintl],
+	       gt_cv_func_gnugettext_libintl,
+	       [gt_save_LIBS="$LIBS"
+		LIBS="$LIBS -lintl $LIBICONV"
+		AC_TRY_LINK([#include <libintl.h>
+extern int _nl_msg_cat_cntr;],
+		  [bindtextdomain ("", "");
+return (int) gettext ("")]ifelse([$2], need-ngettext, [ + (int) ngettext ("", "", 0)], [])[ + _nl_msg_cat_cntr],
+		  gt_cv_func_gnugettext_libintl=yes,
+		  gt_cv_func_gnugettext_libintl=no)
+		LIBS="$gt_save_LIBS"])
+	   fi
+
+	   dnl If an already present or preinstalled GNU gettext() is found,
+	   dnl use it.  But if this macro is used in GNU gettext, and GNU
+	   dnl gettext is already preinstalled in libintl, we update this
+	   dnl libintl.  (Cf. the install rule in intl/Makefile.in.)
+	   if test "$gt_cv_func_gnugettext_libc" = "yes" \
+	      || { test "$gt_cv_func_gnugettext_libintl" = "yes" \
+		   && test "$PACKAGE" != gettext; }; then
+	     AC_DEFINE(HAVE_GETTEXT, 1,
+               [Define if the GNU gettext() function is already present or preinstalled.])
+
+	     if test "$gt_cv_func_gnugettext_libintl" = "yes"; then
+	       dnl If iconv() is in a separate libiconv library, then anyone
+	       dnl linking with libintl{.a,.so} also needs to link with
+	       dnl libiconv.
+	       INTLLIBS="-lintl $LIBICONV"
+	     fi
+
+	     gt_save_LIBS="$LIBS"
+	     LIBS="$LIBS $INTLLIBS"
+	     AC_CHECK_FUNCS(dcgettext)
+	     LIBS="$gt_save_LIBS"
+
+	     dnl Search for GNU msgfmt in the PATH.
+	     MUTT_AM_PATH_PROG_WITH_TEST(MSGFMT, msgfmt,
+	       [$ac_dir/$ac_word --statistics /dev/null >/dev/null 2>&1], :)
+	     AC_PATH_PROG(GMSGFMT, gmsgfmt, $MSGFMT)
+
+	     dnl Search for GNU xgettext in the PATH.
+	     MUTT_AM_PATH_PROG_WITH_TEST(XGETTEXT, xgettext,
+	       [$ac_dir/$ac_word --omit-header /dev/null >/dev/null 2>&1], :)
+
+	     CATOBJEXT=.gmo
+	   fi
+	])
+
+        if test "$CATOBJEXT" = "NONE"; then
+	  dnl GNU gettext is not found in the C library.
+	  dnl Fall back on GNU gettext library.
+	  nls_cv_use_gnu_gettext=yes
+        fi
+      fi
+
+      if test "$nls_cv_use_gnu_gettext" = "yes"; then
+        dnl Mark actions used to generate GNU NLS library.
+        INTLOBJS="\$(GETTOBJS)"
+        MUTT_AM_PATH_PROG_WITH_TEST(MSGFMT, msgfmt,
+	  [$ac_dir/$ac_word --statistics /dev/null >/dev/null 2>&1], :)
+        AC_PATH_PROG(GMSGFMT, gmsgfmt, $MSGFMT)
+        MUTT_AM_PATH_PROG_WITH_TEST(XGETTEXT, xgettext,
+	  [$ac_dir/$ac_word --omit-header /dev/null >/dev/null 2>&1], :)
+        AC_SUBST(MSGFMT)
+	BUILD_INCLUDED_LIBINTL=yes
+	USE_INCLUDED_LIBINTL=yes
+        CATOBJEXT=.gmo
+	INTLLIBS="ifelse([$3],[],\$(top_builddir)/intl,[$3])/libintl.ifelse([$1], use-libtool, [l], [])a $LIBICONV"
+	LIBS=`echo " $LIBS " | sed -e 's/ -lintl / /' -e 's/^ //' -e 's/ $//'`
+      fi
+
+      dnl This could go away some day; the MUTT_PATH_PROG_WITH_TEST already does it.
+      dnl Test whether we really found GNU msgfmt.
+      if test "$GMSGFMT" != ":"; then
+	dnl If it is no GNU msgfmt we define it as : so that the
+	dnl Makefiles still can work.
+	if $GMSGFMT --statistics /dev/null >/dev/null 2>&1; then
+	  : ;
+	else
+	  AC_MSG_RESULT(
+	    [found msgfmt program is not GNU msgfmt; ignore it])
+	  GMSGFMT=":"
+	fi
+      fi
+
+      dnl This could go away some day; the MUTT_PATH_PROG_WITH_TEST already does it.
+      dnl Test whether we really found GNU xgettext.
+      if test "$XGETTEXT" != ":"; then
+	dnl If it is no GNU xgettext we define it as : so that the
+	dnl Makefiles still can work.
+	if $XGETTEXT --omit-header /dev/null >/dev/null 2>&1; then
+	  : ;
+	else
+	  AC_MSG_RESULT(
+	    [found xgettext program is not GNU xgettext; ignore it])
+	  XGETTEXT=":"
+	fi
+      fi
+
+      dnl We need to process the po/ directory.
+      POSUB=po
+    fi
+    AC_OUTPUT_COMMANDS(
+     [for ac_file in $CONFIG_FILES; do
+        # Support "outfile[:infile[:infile...]]"
+        case "$ac_file" in
+          *:*) ac_file=`echo "$ac_file"|sed 's%:.*%%'` ;;
+        esac
+        # PO directories have a Makefile.in generated from Makefile.in.in.
+        case "$ac_file" in */Makefile.in)
+          # Adjust a relative srcdir.
+          ac_dir=`echo "$ac_file"|sed 's%/[^/][^/]*$%%'`
+          ac_dir_suffix="/`echo "$ac_dir"|sed 's%^\./%%'`"
+          ac_dots=`echo "$ac_dir_suffix"|sed 's%/[^/]*%../%g'`
+          # In autoconf-2.13 it is called $ac_given_srcdir.
+          # In autoconf-2.50 it is called $srcdir.
+          test -n "$ac_given_srcdir" || ac_given_srcdir="$srcdir"
+          case "$ac_given_srcdir" in
+            .)  top_srcdir=`echo $ac_dots|sed 's%/$%%'` ;;
+            /*) top_srcdir="$ac_given_srcdir" ;;
+            *)  top_srcdir="$ac_dots$ac_given_srcdir" ;;
+          esac
+          if test -f "$ac_given_srcdir/$ac_dir/POTFILES.in"; then
+            rm -f "$ac_dir/POTFILES"
+            test -n "$as_me" && echo "$as_me: creating $ac_dir/POTFILES" || echo "creating $ac_dir/POTFILES"
+            sed -e "/^#/d" -e "/^[ 	]*\$/d" -e "s,.*,     $top_srcdir/& \\\\," -e "\$s/\(.*\) \\\\/\1/" < "$ac_given_srcdir/$ac_dir/POTFILES.in" > "$ac_dir/POTFILES"
+            test -n "$as_me" && echo "$as_me: creating $ac_dir/Makefile" || echo "creating $ac_dir/Makefile"
+            sed -e "/POTFILES =/r $ac_dir/POTFILES" "$ac_dir/Makefile.in" > "$ac_dir/Makefile"
+          fi
+          ;;
+        esac
+      done])
+
+
+    dnl If this is used in GNU gettext we have to set BUILD_INCLUDED_LIBINTL
+    dnl to 'yes' because some of the testsuite requires it.
+    if test "$PACKAGE" = gettext; then
+      BUILD_INCLUDED_LIBINTL=yes
+    fi
+
+    dnl intl/plural.c is generated from intl/plural.y. It requires bison,
+    dnl because plural.y uses bison specific features. It requires at least
+    dnl bison-1.26 because earlier versions generate a plural.c that doesn't
+    dnl compile.
+    dnl bison is only needed for the maintainer (who touches plural.y). But in
+    dnl order to avoid separate Makefiles or --enable-maintainer-mode, we put
+    dnl the rule in general Makefile. Now, some people carelessly touch the
+    dnl files or have a broken "make" program, hence the plural.c rule will
+    dnl sometimes fire. To avoid an error, defines BISON to ":" if it is not
+    dnl present or too old.
+    AC_CHECK_PROGS([INTLBISON], [bison])
+    if test -z "$INTLBISON"; then
+      ac_verc_fail=yes
+    else
+      dnl Found it, now check the version.
+      AC_MSG_CHECKING([version of bison])
+changequote(<<,>>)dnl
+      ac_prog_version=`$INTLBISON --version 2>&1 | sed -n 's/^.*GNU Bison.* \([0-9]*\.[0-9.]*\).*$/\1/p'`
+      case $ac_prog_version in
+        '') ac_prog_version="v. ?.??, bad"; ac_verc_fail=yes;;
+        1.2[6-9]* | 1.[3-9][0-9]* | [2-9].*)
+changequote([,])dnl
+           ac_prog_version="$ac_prog_version, ok"; ac_verc_fail=no;;
+        *) ac_prog_version="$ac_prog_version, bad"; ac_verc_fail=yes;;
+      esac
+      AC_MSG_RESULT([$ac_prog_version])
+    fi
+    if test $ac_verc_fail = yes; then
+      INTLBISON=:
+    fi
+
+    dnl These rules are solely for the distribution goal.  While doing this
+    dnl we only have to keep exactly one list of the available catalogs
+    dnl in configure.in.
+    for lang in $ALL_LINGUAS; do
+      GMOFILES="$GMOFILES $lang.gmo"
+      POFILES="$POFILES $lang.po"
+    done
+
+    dnl Make all variables we use known to autoconf.
+    AC_SUBST(BUILD_INCLUDED_LIBINTL)
+    AC_SUBST(USE_INCLUDED_LIBINTL)
+    AC_SUBST(CATALOGS)
+    AC_SUBST(CATOBJEXT)
+    AC_SUBST(GMOFILES)
+    AC_SUBST(INTLLIBS)
+    AC_SUBST(INTLOBJS)
+    AC_SUBST(POFILES)
+    AC_SUBST(POSUB)
+
+    dnl For backward compatibility. Some configure.ins may be using this.
+    nls_cv_header_intl=
+    nls_cv_header_libgt=
+
+    dnl For backward compatibility. Some Makefiles may be using this.
+    DATADIRNAME=share
+    AC_SUBST(DATADIRNAME)
+
+    dnl For backward compatibility. Some Makefiles may be using this.
+    INSTOBJEXT=.mo
+    AC_SUBST(INSTOBJEXT)
+
+    dnl For backward compatibility. Some Makefiles may be using this.
+    GENCAT=gencat
+    AC_SUBST(GENCAT)
+  ])
+m4trace:m4/gettext.m4:303: -1- AC_DEFUN([MUTT_AM_GNU_GETTEXT], [AC_REQUIRE([AC_PROG_MAKE_SET])dnl
+   AC_REQUIRE([AC_PROG_CC])dnl
+   AC_REQUIRE([AC_CANONICAL_HOST])dnl
+   AC_REQUIRE([AC_PROG_RANLIB])dnl
+   AC_REQUIRE([AC_ISC_POSIX])dnl
+   AC_REQUIRE([AC_HEADER_STDC])dnl
+   AC_REQUIRE([AC_C_CONST])dnl
+   AC_REQUIRE([AC_C_INLINE])dnl
+   AC_REQUIRE([AC_TYPE_OFF_T])dnl
+   AC_REQUIRE([AC_TYPE_SIZE_T])dnl
+   AC_REQUIRE([AC_FUNC_ALLOCA])dnl
+   AC_REQUIRE([AC_FUNC_MMAP])dnl
+   AC_REQUIRE([MUTT_jm_GLIBC21])dnl
+
+   AC_CHECK_HEADERS([argz.h limits.h locale.h nl_types.h malloc.h stddef.h \
+stdlib.h string.h unistd.h sys/param.h])
+   AC_CHECK_FUNCS([feof_unlocked fgets_unlocked getcwd getegid geteuid \
+getgid getuid mempcpy munmap putenv setenv setlocale stpcpy strchr strcasecmp \
+strdup strtoul tsearch __argz_count __argz_stringify __argz_next])
+
+   MUTT_AM_ICONV
+   MUTT_AM_LANGINFO_CODESET
+   MUTT_AM_LC_MESSAGES
+   MUTT_AM_WITH_NLS([$1],[$2],[$3])
+
+   if test "x$CATOBJEXT" != "x"; then
+     if test "x$ALL_LINGUAS" = "x"; then
+       LINGUAS=
+     else
+       AC_MSG_CHECKING(for catalogs to be installed)
+       NEW_LINGUAS=
+       for presentlang in $ALL_LINGUAS; do
+         useit=no
+         for desiredlang in ${LINGUAS-$ALL_LINGUAS}; do
+           # Use the presentlang catalog if desiredlang is
+           #   a. equal to presentlang, or
+           #   b. a variant of presentlang (because in this case,
+           #      presentlang can be used as a fallback for messages
+           #      which are not translated in the desiredlang catalog).
+           case "$desiredlang" in
+             "$presentlang"*) useit=yes;;
+           esac
+         done
+         if test $useit = yes; then
+           NEW_LINGUAS="$NEW_LINGUAS $presentlang"
+         fi
+       done
+       LINGUAS=$NEW_LINGUAS
+       AC_MSG_RESULT($LINGUAS)
+     fi
+
+     dnl Construct list of names of catalog files to be constructed.
+     if test -n "$LINGUAS"; then
+       for lang in $LINGUAS; do CATALOGS="$CATALOGS $lang$CATOBJEXT"; done
+     fi
+   fi
+
+   dnl If the AC_CONFIG_AUX_DIR macro for autoconf is used we possibly
+   dnl find the mkinstalldirs script in another subdir but $(top_srcdir).
+   dnl Try to locate is.
+   MKINSTALLDIRS=
+   if test -n "$ac_aux_dir"; then
+     MKINSTALLDIRS="$ac_aux_dir/mkinstalldirs"
+   fi
+   if test -z "$MKINSTALLDIRS"; then
+     MKINSTALLDIRS="\$(top_srcdir)/mkinstalldirs"
+   fi
+   AC_SUBST(MKINSTALLDIRS)
+
+   dnl Enable libtool support if the surrounding package wishes it.
+   INTL_LIBTOOL_SUFFIX_PREFIX=ifelse([$1], use-libtool, [l], [])
+   AC_SUBST(INTL_LIBTOOL_SUFFIX_PREFIX)
+  ])
+m4trace:m4/glibc21.m4:6: -1- AC_DEFUN([MUTT_jm_GLIBC21], [
+    AC_CACHE_CHECK(whether we are using the GNU C Library 2.1 or newer,
+      ac_cv_gnu_library_2_1,
+      [AC_EGREP_CPP([Lucky GNU user],
+	[
+#include <features.h>
+#ifdef __GNU_LIBRARY__
+ #if (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 1) || (__GLIBC__ > 2)
+  Lucky GNU user
+ #endif
+#endif
+	],
+	ac_cv_gnu_library_2_1=yes,
+	ac_cv_gnu_library_2_1=no)
+      ]
+    )
+    AC_SUBST(GLIBC21)
+    GLIBC21="$ac_cv_gnu_library_2_1"
+  
+])
+m4trace:m4/gpgme.m4:13: -1- AC_DEFUN([_AM_PATH_GPGME_CONFIG], [ AC_ARG_WITH(gpgme-prefix,
+            AC_HELP_STRING([--with-gpgme-prefix=PFX],
+                           [prefix where GPGME is installed (optional)]),
+     gpgme_config_prefix="$withval", gpgme_config_prefix="")
+  if test "x$gpgme_config_prefix" != x ; then
+      GPGME_CONFIG="$gpgme_config_prefix/bin/gpgme-config"
+  fi
+  AC_PATH_PROG(GPGME_CONFIG, gpgme-config, no)
+
+  if test "$GPGME_CONFIG" != "no" ; then
+    gpgme_version=`$GPGME_CONFIG --version`
+  fi
+  gpgme_version_major=`echo $gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\1/'`
+  gpgme_version_minor=`echo $gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\2/'`
+  gpgme_version_micro=`echo $gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\3/'`
+])
+m4trace:m4/gpgme.m4:38: -1- AC_DEFUN([AM_PATH_GPGME], [ AC_REQUIRE([_AM_PATH_GPGME_CONFIG])dnl
+  tmp=ifelse([$1], ,1:0.4.2,$1)
+  if echo "$tmp" | grep ':' >/dev/null 2>/dev/null ; then
+     req_gpgme_api=`echo "$tmp"     | sed 's/\(.*\):\(.*\)/\1/'`
+     min_gpgme_version=`echo "$tmp" | sed 's/\(.*\):\(.*\)/\2/'`
+  else
+     req_gpgme_api=0
+     min_gpgme_version="$tmp"
+  fi
+
+  AC_MSG_CHECKING(for GPGME - version >= $min_gpgme_version)
+  ok=no
+  if test "$GPGME_CONFIG" != "no" ; then
+    req_major=`echo $min_gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\1/'`
+    req_minor=`echo $min_gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\2/'`
+    req_micro=`echo $min_gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\3/'`
+    if test "$gpgme_version_major" -gt "$req_major"; then
+        ok=yes
+    else 
+        if test "$gpgme_version_major" -eq "$req_major"; then
+            if test "$gpgme_version_minor" -gt "$req_minor"; then
+               ok=yes
+            else
+               if test "$gpgme_version_minor" -eq "$req_minor"; then
+                   if test "$gpgme_version_micro" -ge "$req_micro"; then
+                     ok=yes
+                   fi
+               fi
+            fi
+        fi
+    fi
+  fi
+  if test $ok = yes; then
+     # If we have a recent GPGME, we should also check that the
+     # API is compatible.
+     if test "$req_gpgme_api" -gt 0 ; then
+        tmp=`$GPGME_CONFIG --api-version 2>/dev/null || echo 0`
+        if test "$tmp" -gt 0 ; then
+           if test "$req_gpgme_api" -ne "$tmp" ; then
+             ok=no
+           fi
+        fi
+     fi
+  fi
+  if test $ok = yes; then
+    GPGME_CFLAGS=`$GPGME_CONFIG --cflags`
+    GPGME_LIBS=`$GPGME_CONFIG --libs`
+    AC_MSG_RESULT(yes)
+    ifelse([$2], , :, [$2])
+  else
+    GPGME_CFLAGS=""
+    GPGME_LIBS=""
+    AC_MSG_RESULT(no)
+    ifelse([$3], , :, [$3])
+  fi
+  AC_SUBST(GPGME_CFLAGS)
+  AC_SUBST(GPGME_LIBS)
+])
+m4trace:m4/gpgme.m4:105: -1- AC_DEFUN([AM_PATH_GPGME_PTH], [ AC_REQUIRE([_AM_PATH_GPGME_CONFIG])dnl
+  tmp=ifelse([$1], ,1:0.4.2,$1)
+  if echo "$tmp" | grep ':' >/dev/null 2>/dev/null ; then
+     req_gpgme_api=`echo "$tmp"     | sed 's/\(.*\):\(.*\)/\1/'`
+     min_gpgme_version=`echo "$tmp" | sed 's/\(.*\):\(.*\)/\2/'`
+  else
+     req_gpgme_api=0
+     min_gpgme_version="$tmp"
+  fi
+
+  AC_MSG_CHECKING(for GPGME Pth - version >= $min_gpgme_version)
+  ok=no
+  if test "$GPGME_CONFIG" != "no" ; then
+    if `$GPGME_CONFIG --thread=pth 2> /dev/null` ; then
+      req_major=`echo $min_gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\1/'`
+      req_minor=`echo $min_gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\2/'`
+      req_micro=`echo $min_gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\3/'`
+      if test "$gpgme_version_major" -gt "$req_major"; then
+        ok=yes
+      else 
+        if test "$gpgme_version_major" -eq "$req_major"; then
+          if test "$gpgme_version_minor" -gt "$req_minor"; then
+            ok=yes
+          else
+            if test "$gpgme_version_minor" -eq "$req_minor"; then
+              if test "$gpgme_version_micro" -ge "$req_micro"; then
+                ok=yes
+              fi
+            fi
+          fi
+        fi
+      fi
+    fi
+  fi
+  if test $ok = yes; then
+     # If we have a recent GPGME, we should also check that the
+     # API is compatible.
+     if test "$req_gpgme_api" -gt 0 ; then
+        tmp=`$GPGME_CONFIG --api-version 2>/dev/null || echo 0`
+        if test "$tmp" -gt 0 ; then
+           if test "$req_gpgme_api" -ne "$tmp" ; then
+             ok=no
+           fi
+        fi
+     fi
+  fi
+  if test $ok = yes; then
+    GPGME_PTH_CFLAGS=`$GPGME_CONFIG --thread=pth --cflags`
+    GPGME_PTH_LIBS=`$GPGME_CONFIG --thread=pth --libs`
+    AC_MSG_RESULT(yes)
+    ifelse([$2], , :, [$2])
+  else
+    GPGME_PTH_CFLAGS=""
+    GPGME_PTH_LIBS=""
+    AC_MSG_RESULT(no)
+    ifelse([$3], , :, [$3])
+  fi
+  AC_SUBST(GPGME_PTH_CFLAGS)
+  AC_SUBST(GPGME_PTH_LIBS)
+])
+m4trace:m4/gpgme.m4:175: -1- AC_DEFUN([AM_PATH_GPGME_PTHREAD], [ AC_REQUIRE([_AM_PATH_GPGME_CONFIG])dnl
+  tmp=ifelse([$1], ,1:0.4.2,$1)
+  if echo "$tmp" | grep ':' >/dev/null 2>/dev/null ; then
+     req_gpgme_api=`echo "$tmp"     | sed 's/\(.*\):\(.*\)/\1/'`
+     min_gpgme_version=`echo "$tmp" | sed 's/\(.*\):\(.*\)/\2/'`
+  else
+     req_gpgme_api=0
+     min_gpgme_version="$tmp"
+  fi
+
+  AC_MSG_CHECKING(for GPGME pthread - version >= $min_gpgme_version)
+  ok=no
+  if test "$GPGME_CONFIG" != "no" ; then
+    if `$GPGME_CONFIG --thread=pthread 2> /dev/null` ; then
+      req_major=`echo $min_gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\1/'`
+      req_minor=`echo $min_gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\2/'`
+      req_micro=`echo $min_gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\3/'`
+      if test "$gpgme_version_major" -gt "$req_major"; then
+        ok=yes
+      else 
+        if test "$gpgme_version_major" -eq "$req_major"; then
+          if test "$gpgme_version_minor" -gt "$req_minor"; then
+            ok=yes
+          else
+            if test "$gpgme_version_minor" -eq "$req_minor"; then
+              if test "$gpgme_version_micro" -ge "$req_micro"; then
+                ok=yes
+              fi
+            fi
+          fi
+        fi
+      fi
+    fi
+  fi
+  if test $ok = yes; then
+     # If we have a recent GPGME, we should also check that the
+     # API is compatible.
+     if test "$req_gpgme_api" -gt 0 ; then
+        tmp=`$GPGME_CONFIG --api-version 2>/dev/null || echo 0`
+        if test "$tmp" -gt 0 ; then
+           if test "$req_gpgme_api" -ne "$tmp" ; then
+             ok=no
+           fi
+        fi
+     fi
+  fi
+  if test $ok = yes; then
+    GPGME_PTHREAD_CFLAGS=`$GPGME_CONFIG --thread=pthread --cflags`
+    GPGME_PTHREAD_LIBS=`$GPGME_CONFIG --thread=pthread --libs`
+    AC_MSG_RESULT(yes)
+    ifelse([$2], , :, [$2])
+  else
+    GPGME_PTHREAD_CFLAGS=""
+    GPGME_PTHREAD_LIBS=""
+    AC_MSG_RESULT(no)
+    ifelse([$3], , :, [$3])
+  fi
+  AC_SUBST(GPGME_PTHREAD_CFLAGS)
+  AC_SUBST(GPGME_PTHREAD_LIBS)
+])
+m4trace:m4/gpgme.m4:245: -1- AC_DEFUN([AM_PATH_GPGME_GLIB], [ AC_REQUIRE([_AM_PATH_GPGME_CONFIG])dnl
+  tmp=ifelse([$1], ,1:0.4.2,$1)
+  if echo "$tmp" | grep ':' >/dev/null 2>/dev/null ; then
+     req_gpgme_api=`echo "$tmp"     | sed 's/\(.*\):\(.*\)/\1/'`
+     min_gpgme_version=`echo "$tmp" | sed 's/\(.*\):\(.*\)/\2/'`
+  else
+     req_gpgme_api=0
+     min_gpgme_version="$tmp"
+  fi
+
+  AC_MSG_CHECKING(for GPGME - version >= $min_gpgme_version)
+  ok=no
+  if test "$GPGME_CONFIG" != "no" ; then
+    req_major=`echo $min_gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\1/'`
+    req_minor=`echo $min_gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\2/'`
+    req_micro=`echo $min_gpgme_version | \
+               sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\3/'`
+    if test "$gpgme_version_major" -gt "$req_major"; then
+        ok=yes
+    else 
+        if test "$gpgme_version_major" -eq "$req_major"; then
+            if test "$gpgme_version_minor" -gt "$req_minor"; then
+               ok=yes
+            else
+               if test "$gpgme_version_minor" -eq "$req_minor"; then
+                   if test "$gpgme_version_micro" -ge "$req_micro"; then
+                     ok=yes
+                   fi
+               fi
+            fi
+        fi
+    fi
+  fi
+  if test $ok = yes; then
+     # If we have a recent GPGME, we should also check that the
+     # API is compatible.
+     if test "$req_gpgme_api" -gt 0 ; then
+        tmp=`$GPGME_CONFIG --api-version 2>/dev/null || echo 0`
+        if test "$tmp" -gt 0 ; then
+           if test "$req_gpgme_api" -ne "$tmp" ; then
+             ok=no
+           fi
+        fi
+     fi
+  fi
+  if test $ok = yes; then
+    GPGME_GLIB_CFLAGS=`$GPGME_CONFIG --glib --cflags`
+    GPGME_GLIB_LIBS=`$GPGME_CONFIG --glib --libs`
+    AC_MSG_RESULT(yes)
+    ifelse([$2], , :, [$2])
+  else
+    GPGME_GLIB_CFLAGS=""
+    GPGME_GLIB_LIBS=""
+    AC_MSG_RESULT(no)
+    ifelse([$3], , :, [$3])
+  fi
+  AC_SUBST(GPGME_GLIB_CFLAGS)
+  AC_SUBST(GPGME_GLIB_LIBS)
+])
+m4trace:m4/gssapi.m4:9: -1- AC_DEFUN([MUTT_AM_PATH_GSSAPI], [
+  GSSAPI_PREFIX=[$]$1
+  GSSAPI_IMPL="none"
+  saved_CPPFLAGS="$CPPFLAGS"
+  saved_LDFLAGS="$LDFLAGS"
+  saved_LIBS="$LIBS"
+  dnl First try krb5-config
+  if test "$GSSAPI_PREFIX" != "yes"
+  then
+    krb5_path="$GSSAPI_PREFIX/bin"
+  else
+    krb5_path="$PATH"
+  fi
+  AC_PATH_PROG(KRB5CFGPATH, krb5-config, none, $krb5_path)
+  if test "$KRB5CFGPATH" != "none"
+  then
+    GSSAPI_CFLAGS="$CPPFLAGS `$KRB5CFGPATH --cflags gssapi`"
+    GSSAPI_LIBS="$MUTTLIBS `$KRB5CFGPATH --libs gssapi`"
+    case "`$KRB5CFGPATH --version`" in
+      "Kerberos 5 "*)	GSSAPI_IMPL="MIT";;
+      ?eimdal*)		GSSAPI_IMPL="Heimdal";;
+      *)		GSSAPI_IMPL="Unknown";;
+   esac
+  else
+    dnl No krb5-config, run the old code
+    if test "$GSSAPI_PREFIX" != "yes"
+    then
+      GSSAPI_CFLAGS="-I$GSSAPI_PREFIX/include"
+      GSSAPI_LDFLAGS="-L$GSSAPI_PREFIX/lib"
+      CPPFLAGS="$CPPFLAGS $GSSAPI_CFLAGS"
+      LDFLAGS="$LDFLAGS $GSSAPI_LDFLAGS"
+    fi
+
+    dnl New MIT kerberos V support
+    AC_CHECK_LIB(gssapi_krb5, gss_init_sec_context, [
+      GSSAPI_IMPL="MIT",
+      GSSAPI_LIBS="$GSSAPI_LDFLAGS -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err"
+      ],, -lkrb5 -lk5crypto -lcom_err)
+
+    dnl Heimdal kerberos V support
+    if test "$GSSAPI_IMPL" = "none"
+    then
+      AC_CHECK_LIB(gssapi, gss_init_sec_context, [
+          GSSAPI_IMPL="Heimdal"
+          GSSAPI_LIBS="$GSSAPI_LDFLAGS -lgssapi -lkrb5 -ldes -lasn1 -lroken"
+          GSSAPI_LIBS="$GSSAPI_LIBS -lcrypt -lcom_err"
+          ],, -lkrb5 -ldes -lasn1 -lroken -lcrypt -lcom_err)
+    fi
+
+    dnl Old MIT Kerberos V
+    dnl Note: older krb5 distributions use -lcrypto instead of
+    dnl -lk5crypto, which collides with OpenSSL.  One way of dealing
+    dnl with that is to extract all objects from krb5's libcrypto
+    dnl and from openssl's libcrypto into the same directory, then
+    dnl to create a new libcrypto from these.
+    if test "$GSSAPI_IMPL" = "none"
+    then
+      AC_CHECK_LIB(gssapi_krb5, g_order_init, [
+        GSSAPI_IMPL="OldMIT",
+        GSSAPI_LIBS="$GSSAPI_LDFLAGS -lgssapi_krb5 -lkrb5 -lcrypto -lcom_err"
+        ],, -lkrb5 -lcrypto -lcom_err)
+    fi
+  fi
+
+  CPPFLAGS="$saved_CPPFLAGS"
+  LDFLAGS="$saved_LDFLAGS"
+  LIBS="$saved_LIBS"
+])
+m4trace:m4/iconv.m4:5: -1- AC_DEFUN([MUTT_AM_ICONV], [
+  dnl Some systems have iconv in libc, some have it in libiconv (OSF/1 and
+  dnl those with the standalone portable GNU libiconv installed).
+
+  AC_ARG_WITH([libiconv-prefix],
+AC_HELP_STRING([--with-libiconv-prefix@<:@=DIR@:>@], [Search for libiconv in DIR/include and DIR/lib]), [
+    for dir in `echo "$withval" | tr : ' '`; do
+      if test -d $dir/include; then CPPFLAGS="$CPPFLAGS -I$dir/include"; fi
+      if test -d $dir/lib; then LDFLAGS="$LDFLAGS -L$dir/lib"; fi
+    done
+   ])
+
+  AC_CACHE_CHECK(for iconv, am_cv_func_iconv, [
+    am_cv_func_iconv="no, consider installing GNU libiconv"
+    am_cv_lib_iconv=no
+    AC_TRY_LINK([#include <stdlib.h>
+#include <iconv.h>],
+      [iconv_t cd = iconv_open("","");
+       iconv(cd,NULL,NULL,NULL,NULL);
+       iconv_close(cd);],
+      am_cv_func_iconv=yes)
+    if test "$am_cv_func_iconv" != yes; then
+      am_save_LIBS="$LIBS"
+      LIBS="$LIBS -liconv"
+      AC_TRY_LINK([#include <stdlib.h>
+#include <iconv.h>],
+        [iconv_t cd = iconv_open("","");
+         iconv(cd,NULL,NULL,NULL,NULL);
+         iconv_close(cd);],
+        am_cv_lib_iconv=yes
+        am_cv_func_iconv=yes)
+      LIBS="$am_save_LIBS"
+    fi
+  ])
+  if test "$am_cv_func_iconv" = yes; then
+    AC_DEFINE(HAVE_ICONV, 1, [Define if you have the iconv() function.])
+    AC_MSG_CHECKING([for iconv declaration])
+    AC_CACHE_VAL(am_cv_proto_iconv, [
+      AC_TRY_COMPILE([
+#include <stdlib.h>
+#include <iconv.h>
+extern
+#ifdef __cplusplus
+"C"
+#endif
+#if defined(__STDC__) || defined(__cplusplus)
+size_t iconv (iconv_t cd, char * *inbuf, size_t *inbytesleft, char * *outbuf, size_t *outbytesleft);
+#else
+size_t iconv();
+#endif
+], [], am_cv_proto_iconv_arg1="", am_cv_proto_iconv_arg1="const")
+      am_cv_proto_iconv="extern size_t iconv (iconv_t cd, $am_cv_proto_iconv_arg1 char * *inbuf, size_t *inbytesleft, char * *outbuf, size_t *outbytesleft);"])
+    am_cv_proto_iconv=`echo "[$]am_cv_proto_iconv" | tr -s ' ' | sed -e 's/( /(/'`
+    AC_MSG_RESULT([$]{ac_t:-
+         }[$]am_cv_proto_iconv)
+    AC_DEFINE_UNQUOTED(ICONV_CONST, $am_cv_proto_iconv_arg1,
+      [Define as const if the declaration of iconv() needs const.])
+  fi
+  LIBICONV=
+  if test "$am_cv_lib_iconv" = yes; then
+    LIBICONV="-liconv"
+  fi
+  AC_SUBST(LIBICONV)
+])
+m4trace:m4/lcmessage.m4:15: -1- AC_DEFUN([MUTT_AM_LC_MESSAGES], [if test $ac_cv_header_locale_h = yes; then
+    AC_CACHE_CHECK([for LC_MESSAGES], am_cv_val_LC_MESSAGES,
+      [AC_TRY_LINK([#include <locale.h>], [return LC_MESSAGES],
+       am_cv_val_LC_MESSAGES=yes, am_cv_val_LC_MESSAGES=no)])
+    if test $am_cv_val_LC_MESSAGES = yes; then
+      AC_DEFINE(HAVE_LC_MESSAGES, 1,
+        [Define if your <locale.h> file defines LC_MESSAGES.])
+    fi
+  fi])
+m4trace:m4/progtest.m4:17: -1- AC_DEFUN([MUTT_AM_PATH_PROG_WITH_TEST], [# Extract the first word of "$2", so it can be a program name with args.
+set dummy $2; ac_word=[$]2
+AC_MSG_CHECKING([for $ac_word])
+AC_CACHE_VAL(ac_cv_path_$1,
+[case "[$]$1" in
+  /*)
+  ac_cv_path_$1="[$]$1" # Let the user override the test with a path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
+  for ac_dir in ifelse([$5], , $PATH, [$5]); do
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      if [$3]; then
+	ac_cv_path_$1="$ac_dir/$ac_word"
+	break
+      fi
+    fi
+  done
+  IFS="$ac_save_ifs"
+dnl If no 4th arg is given, leave the cache variable unset,
+dnl so AC_PATH_PROGS will keep looking.
+ifelse([$4], , , [  test -z "[$]ac_cv_path_$1" && ac_cv_path_$1="$4"
+])dnl
+  ;;
+esac])dnl
+$1="$ac_cv_path_$1"
+if test ifelse([$4], , [-n "[$]$1"], ["[$]$1" != "$4"]); then
+  AC_MSG_RESULT([$]$1)
+else
+  AC_MSG_RESULT(no)
+fi
+AC_SUBST($1)dnl
+])
+m4trace:m4/types.m4:9: -1- AC_DEFUN([MUTT_C99_INTTYPES], [dnl
+AC_CHECK_HEADERS([inttypes.h])
+AC_CHECK_TYPE([uint32_t],
+  [AC_DEFINE(HAVE_C99_INTTYPES, 1, [Define if you have the C99 integer types])])
+AC_CHECK_SIZEOF(short)
+AC_CHECK_SIZEOF(int)
+AC_CHECK_SIZEOF(long)
+AC_CHECK_SIZEOF(long long)])
+m4trace:configure.ac:6: -1- m4_pattern_forbid([^_?A[CHUM]_])
+m4trace:configure.ac:6: -1- m4_pattern_forbid([_AC_])
+m4trace:configure.ac:6: -1- m4_pattern_forbid([^LIBOBJS$], [do not use LIBOBJS directly, use AC_LIBOBJ (see section `AC_LIBOBJ vs LIBOBJS'])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^AS_FLAGS$])
+m4trace:configure.ac:6: -1- m4_pattern_forbid([^_?m4_])
+m4trace:configure.ac:6: -1- m4_pattern_forbid([^dnl$])
+m4trace:configure.ac:6: -1- m4_pattern_forbid([^_?AS_])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^SHELL$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^PATH_SEPARATOR$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^PACKAGE_URL$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^exec_prefix$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^prefix$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^program_transform_name$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^bindir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^sbindir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^libexecdir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^datarootdir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^datadir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^sysconfdir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^sharedstatedir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^localstatedir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^includedir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^oldincludedir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^docdir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^infodir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^htmldir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^dvidir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^pdfdir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^psdir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^libdir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^localedir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^mandir$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^PACKAGE_URL$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^DEFS$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^ECHO_C$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^ECHO_N$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^ECHO_T$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^build_alias$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^host_alias$])
+m4trace:configure.ac:6: -1- m4_pattern_allow([^target_alias$])
+m4trace:configure.ac:8: -1- AM_INIT_AUTOMAKE
+m4trace:configure.ac:8: -1- m4_pattern_allow([^AM_[A-Z]+FLAGS$])
+m4trace:configure.ac:8: -1- AM_SET_CURRENT_AUTOMAKE_VERSION
+m4trace:configure.ac:8: -1- AM_AUTOMAKE_VERSION([1.11.6])
+m4trace:configure.ac:8: -1- _AM_AUTOCONF_VERSION([2.69])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^INSTALL_PROGRAM$])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^INSTALL_SCRIPT$])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^INSTALL_DATA$])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^am__isrc$])
+m4trace:configure.ac:8: -1- _AM_SUBST_NOTMAKE([am__isrc])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^CYGPATH_W$])
+m4trace:configure.ac:8: -1- _AM_SET_OPTIONS([])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^PACKAGE$])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^VERSION$])
+m4trace:configure.ac:8: -1- _AM_IF_OPTION([no-define], [], [AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE", [Name of package])
+ AC_DEFINE_UNQUOTED(VERSION, "$VERSION", [Version number of package])])
+m4trace:configure.ac:8: -2- _AM_MANGLE_OPTION([no-define])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^PACKAGE$])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^VERSION$])
+m4trace:configure.ac:8: -1- AM_SANITY_CHECK
+m4trace:configure.ac:8: -1- AM_MISSING_PROG([ACLOCAL], [aclocal-${am__api_version}])
+m4trace:configure.ac:8: -1- AM_MISSING_HAS_RUN
+m4trace:configure.ac:8: -1- AM_AUX_DIR_EXPAND
+m4trace:configure.ac:8: -1- m4_pattern_allow([^ACLOCAL$])
+m4trace:configure.ac:8: -1- AM_MISSING_PROG([AUTOCONF], [autoconf])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^AUTOCONF$])
+m4trace:configure.ac:8: -1- AM_MISSING_PROG([AUTOMAKE], [automake-${am__api_version}])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^AUTOMAKE$])
+m4trace:configure.ac:8: -1- AM_MISSING_PROG([AUTOHEADER], [autoheader])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^AUTOHEADER$])
+m4trace:configure.ac:8: -1- AM_MISSING_PROG([MAKEINFO], [makeinfo])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^MAKEINFO$])
+m4trace:configure.ac:8: -1- AM_PROG_INSTALL_SH
+m4trace:configure.ac:8: -1- m4_pattern_allow([^install_sh$])
+m4trace:configure.ac:8: -1- AM_PROG_INSTALL_STRIP
+m4trace:configure.ac:8: -1- m4_pattern_allow([^STRIP$])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^INSTALL_STRIP_PROGRAM$])
+m4trace:configure.ac:8: -1- AM_PROG_MKDIR_P
+m4trace:configure.ac:8: -1- m4_pattern_allow([^MKDIR_P$])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^mkdir_p$])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^AWK$])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^SET_MAKE$])
+m4trace:configure.ac:8: -1- AM_SET_LEADING_DOT
+m4trace:configure.ac:8: -1- m4_pattern_allow([^am__leading_dot$])
+m4trace:configure.ac:8: -1- _AM_IF_OPTION([tar-ustar], [_AM_PROG_TAR([ustar])], [_AM_IF_OPTION([tar-pax], [_AM_PROG_TAR([pax])],
+			     [_AM_PROG_TAR([v7])])])
+m4trace:configure.ac:8: -2- _AM_MANGLE_OPTION([tar-ustar])
+m4trace:configure.ac:8: -1- _AM_IF_OPTION([tar-pax], [_AM_PROG_TAR([pax])], [_AM_PROG_TAR([v7])])
+m4trace:configure.ac:8: -2- _AM_MANGLE_OPTION([tar-pax])
+m4trace:configure.ac:8: -1- _AM_PROG_TAR([v7])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^AMTAR$])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^am__tar$])
+m4trace:configure.ac:8: -1- m4_pattern_allow([^am__untar$])
+m4trace:configure.ac:8: -1- _AM_IF_OPTION([no-dependencies], [], [AC_PROVIDE_IFELSE([AC_PROG_CC],
+		  [_AM_DEPENDENCIES(CC)],
+		  [define([AC_PROG_CC],
+			  defn([AC_PROG_CC])[_AM_DEPENDENCIES(CC)])])dnl
+AC_PROVIDE_IFELSE([AC_PROG_CXX],
+		  [_AM_DEPENDENCIES(CXX)],
+		  [define([AC_PROG_CXX],
+			  defn([AC_PROG_CXX])[_AM_DEPENDENCIES(CXX)])])dnl
+AC_PROVIDE_IFELSE([AC_PROG_OBJC],
+		  [_AM_DEPENDENCIES(OBJC)],
+		  [define([AC_PROG_OBJC],
+			  defn([AC_PROG_OBJC])[_AM_DEPENDENCIES(OBJC)])])dnl
+])
+m4trace:configure.ac:8: -2- _AM_MANGLE_OPTION([no-dependencies])
+m4trace:configure.ac:8: -1- _AM_IF_OPTION([silent-rules], [AC_REQUIRE([AM_SILENT_RULES])])
+m4trace:configure.ac:8: -2- _AM_MANGLE_OPTION([silent-rules])
+m4trace:configure.ac:11: -1- m4_pattern_allow([^CONFIG_STATUS_DEPENDENCIES$])
+m4trace:configure.ac:14: -1- m4_pattern_allow([^MUTT_VERSION$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CFLAGS$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^LDFLAGS$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^ac_ct_CC$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^EXEEXT$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^OBJEXT$])
+m4trace:configure.ac:16: -1- _AM_DEPENDENCIES([CC])
+m4trace:configure.ac:16: -1- AM_SET_DEPDIR
+m4trace:configure.ac:16: -1- m4_pattern_allow([^DEPDIR$])
+m4trace:configure.ac:16: -1- AM_OUTPUT_DEPENDENCY_COMMANDS
+m4trace:configure.ac:16: -1- AM_MAKE_INCLUDE
+m4trace:configure.ac:16: -1- m4_pattern_allow([^am__include$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^am__quote$])
+m4trace:configure.ac:16: -1- AM_DEP_TRACK
+m4trace:configure.ac:16: -1- AM_CONDITIONAL([AMDEP], [test "x$enable_dependency_tracking" != xno])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^AMDEP_TRUE$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^AMDEP_FALSE$])
+m4trace:configure.ac:16: -1- _AM_SUBST_NOTMAKE([AMDEP_TRUE])
+m4trace:configure.ac:16: -1- _AM_SUBST_NOTMAKE([AMDEP_FALSE])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^AMDEPBACKSLASH$])
+m4trace:configure.ac:16: -1- _AM_SUBST_NOTMAKE([AMDEPBACKSLASH])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^am__nodep$])
+m4trace:configure.ac:16: -1- _AM_SUBST_NOTMAKE([am__nodep])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CCDEPMODE$])
+m4trace:configure.ac:16: -1- AM_CONDITIONAL([am__fastdepCC], [
+  test "x$enable_dependency_tracking" != xno \
+  && test "$am_cv_CC_dependencies_compiler_type" = gcc3])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^am__fastdepCC_TRUE$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^am__fastdepCC_FALSE$])
+m4trace:configure.ac:16: -1- _AM_SUBST_NOTMAKE([am__fastdepCC_TRUE])
+m4trace:configure.ac:16: -1- _AM_SUBST_NOTMAKE([am__fastdepCC_FALSE])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CPP$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CPP$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^GREP$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^EGREP$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^STDC_HEADERS$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^_POSIX_SOURCE$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^_POSIX_1_SOURCE$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^_MINIX$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^__EXTENSIONS__$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^_ALL_SOURCE$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^_GNU_SOURCE$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^_POSIX_PTHREAD_SEMANTICS$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^_TANDEM_SOURCE$])
+m4trace:configure.ac:20: -1- m4_pattern_allow([^build$])
+m4trace:configure.ac:20: -1- m4_pattern_allow([^build_cpu$])
+m4trace:configure.ac:20: -1- m4_pattern_allow([^build_vendor$])
+m4trace:configure.ac:20: -1- m4_pattern_allow([^build_os$])
+m4trace:configure.ac:20: -1- m4_pattern_allow([^host$])
+m4trace:configure.ac:20: -1- m4_pattern_allow([^host_cpu$])
+m4trace:configure.ac:20: -1- m4_pattern_allow([^host_vendor$])
+m4trace:configure.ac:20: -1- m4_pattern_allow([^host_os$])
+m4trace:configure.ac:30: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:30: -1- m4_pattern_allow([^CFLAGS$])
+m4trace:configure.ac:30: -1- m4_pattern_allow([^LDFLAGS$])
+m4trace:configure.ac:30: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.ac:30: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.ac:30: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:30: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:30: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:30: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:30: -1- m4_pattern_allow([^ac_ct_CC$])
+m4trace:configure.ac:30: -1- _AM_DEPENDENCIES([CC])
+m4trace:configure.ac:30: -1- m4_pattern_allow([^CCDEPMODE$])
+m4trace:configure.ac:30: -1- AM_CONDITIONAL([am__fastdepCC], [
+  test "x$enable_dependency_tracking" != xno \
+  && test "$am_cv_CC_dependencies_compiler_type" = gcc3])
+m4trace:configure.ac:30: -1- m4_pattern_allow([^am__fastdepCC_TRUE$])
+m4trace:configure.ac:30: -1- m4_pattern_allow([^am__fastdepCC_FALSE$])
+m4trace:configure.ac:30: -1- _AM_SUBST_NOTMAKE([am__fastdepCC_TRUE])
+m4trace:configure.ac:30: -1- _AM_SUBST_NOTMAKE([am__fastdepCC_FALSE])
+m4trace:configure.ac:35: -1- m4_pattern_allow([^CPP$])
+m4trace:configure.ac:35: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.ac:35: -1- m4_pattern_allow([^CPP$])
+m4trace:configure.ac:36: -1- m4_pattern_allow([^SET_MAKE$])
+m4trace:configure.ac:38: -1- m4_pattern_allow([^RANLIB$])
+m4trace:configure.ac:39: -1- m4_pattern_allow([^AR$])
+m4trace:configure.ac:42: -1- m4_pattern_allow([^const$])
+m4trace:configure.ac:43: -1- m4_pattern_allow([^WORDS_BIGENDIAN$])
+m4trace:configure.ac:43: -1- m4_pattern_allow([^AC_APPLE_UNIVERSAL_BUILD$])
+m4trace:configure.ac:45: -1- m4_pattern_allow([^_FILE_OFFSET_BITS$])
+m4trace:configure.ac:45: -1- m4_pattern_allow([^_LARGE_FILES$])
+m4trace:configure.ac:46: -1- m4_pattern_allow([^_LARGEFILE_SOURCE$])
+m4trace:configure.ac:46: -1- m4_pattern_allow([^HAVE_FSEEKO$])
+m4trace:configure.ac:47: -1- m4_pattern_allow([^SIZEOF_OFF_T$])
+m4trace:configure.ac:49: -1- m4_pattern_allow([^DBX$])
+m4trace:configure.ac:50: -1- m4_pattern_allow([^GDB$])
+m4trace:configure.ac:51: -1- m4_pattern_allow([^SDB$])
+m4trace:configure.ac:63: -1- m4_pattern_allow([^DEBUGGER$])
+m4trace:configure.ac:112: -1- MUTT_C99_INTTYPES
+m4trace:configure.ac:112: -1- m4_pattern_allow([^HAVE_INTTYPES_H$])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^HAVE_C99_INTTYPES$])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^SIZEOF_SHORT$])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^SIZEOF_INT$])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^SIZEOF_LONG$])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^SIZEOF_LONG_LONG$])
+m4trace:configure.ac:113: -1- AC_TYPE_LONG_LONG_INT
+m4trace:configure.ac:113: -1- _AC_TYPE_LONG_LONG_SNIPPET
+m4trace:configure.ac:113: -1- m4_pattern_allow([^HAVE_LONG_LONG_INT$])
+m4trace:configure.ac:116: -1- m4_pattern_allow([^SENDMAIL$])
+m4trace:configure.ac:117: -1- m4_pattern_allow([^SENDMAIL$])
+m4trace:configure.ac:130: -2- m4_pattern_allow([^CRYPT_BACKEND_GPGME$])
+m4trace:configure.ac:130: -1- AM_PATH_GPGME([1.0.0], [
+$as_echo "@%:@define CRYPT_BACKEND_GPGME 1" >>confdefs.h
+], [gpgme_found=no])
+m4trace:configure.ac:130: -1- _AM_PATH_GPGME_CONFIG
+m4trace:configure.ac:130: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:207: AC_HELP_STRING is expanded from...
+m4/gpgme.m4:13: _AM_PATH_GPGME_CONFIG is expanded from...
+m4/gpgme.m4:38: AM_PATH_GPGME is expanded from...
+configure.ac:130: the top level])
+m4trace:configure.ac:130: -1- m4_pattern_allow([^GPGME_CONFIG$])
+m4trace:configure.ac:130: -1- m4_pattern_allow([^GPGME_CFLAGS$])
+m4trace:configure.ac:130: -1- m4_pattern_allow([^GPGME_LIBS$])
+m4trace:configure.ac:136: -2- m4_pattern_allow([^HAVE_GPGME_PKA_TRUST$])
+m4trace:configure.ac:136: -1- AM_PATH_GPGME([1.1.1], [
+$as_echo "@%:@define HAVE_GPGME_PKA_TRUST 1" >>confdefs.h
+])
+m4trace:configure.ac:136: -1- m4_pattern_allow([^GPGME_CFLAGS$])
+m4trace:configure.ac:136: -1- m4_pattern_allow([^GPGME_LIBS$])
+m4trace:configure.ac:139: -2- m4_pattern_allow([^CRYPT_BACKEND_GPGME$])
+m4trace:configure.ac:139: -1- AM_PATH_GPGME([1.0.0], [
+$as_echo "@%:@define CRYPT_BACKEND_GPGME 1" >>confdefs.h
+])
+m4trace:configure.ac:139: -1- m4_pattern_allow([^GPGME_CFLAGS$])
+m4trace:configure.ac:139: -1- m4_pattern_allow([^GPGME_LIBS$])
+m4trace:configure.ac:154: -1- m4_pattern_allow([^CRYPT_BACKEND_CLASSIC_PGP$])
+m4trace:configure.ac:166: -1- m4_pattern_allow([^CRYPT_BACKEND_CLASSIC_SMIME$])
+m4trace:configure.ac:171: -1- m4_pattern_allow([^MIXMASTER$])
+m4trace:configure.ac:187: -1- m4_pattern_allow([^OPS$])
+m4trace:configure.ac:189: -1- m4_pattern_allow([^PGPAUX_TARGET$])
+m4trace:configure.ac:190: -1- m4_pattern_allow([^SMIMEAUX_TARGET$])
+m4trace:configure.ac:192: -1- m4_pattern_allow([^ISPELL$])
+m4trace:configure.ac:194: -1- m4_pattern_allow([^ISPELL$])
+m4trace:configure.ac:197: -1- m4_pattern_allow([^HAVE_LIBTERMLIB$])
+m4trace:configure.ac:197: -1- m4_pattern_allow([^USE_SLANG_CURSES$])
+m4trace:configure.ac:197: -1- m4_pattern_allow([^HAVE_COLOR$])
+m4trace:configure.ac:197: -1- m4_pattern_allow([^HAVE_NCURSESW_NCURSES_H$])
+m4trace:configure.ac:197: -1- m4_pattern_allow([^HAVE_NCURSES_NCURSES_H$])
+m4trace:configure.ac:197: -1- m4_pattern_allow([^HAVE_NCURSES_H$])
+m4trace:configure.ac:197: -1- CF_CURSES_LIBS
+m4trace:configure.ac:197: -1- _m4_warn([obsolete], [The macro `AC_ERROR' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/oldnames.m4:34: AC_ERROR is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/functions.m4:59: AC_CHECK_FUNC is expanded from...
+m4/curslib.m4:4: CF_CURSES_LIBS is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/libs.m4:99: AC_CHECK_LIB is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/functions.m4:59: AC_CHECK_FUNC is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:1481: AC_ARG_WITH is expanded from...
+configure.ac:197: the top level])
+m4trace:configure.ac:197: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/functions.m4:59: AC_CHECK_FUNC is expanded from...
+m4/curslib.m4:4: CF_CURSES_LIBS is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/libs.m4:99: AC_CHECK_LIB is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/functions.m4:59: AC_CHECK_FUNC is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:1481: AC_ARG_WITH is expanded from...
+configure.ac:197: the top level])
+m4trace:configure.ac:197: -1- _m4_warn([obsolete], [The macro `AC_ERROR' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/oldnames.m4:34: AC_ERROR is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/functions.m4:59: AC_CHECK_FUNC is expanded from...
+m4/curslib.m4:4: CF_CURSES_LIBS is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/libs.m4:99: AC_CHECK_LIB is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/functions.m4:59: AC_CHECK_FUNC is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:1481: AC_ARG_WITH is expanded from...
+configure.ac:197: the top level])
+m4trace:configure.ac:197: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/functions.m4:59: AC_CHECK_FUNC is expanded from...
+m4/curslib.m4:4: CF_CURSES_LIBS is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/libs.m4:99: AC_CHECK_LIB is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/functions.m4:59: AC_CHECK_FUNC is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:1481: AC_ARG_WITH is expanded from...
+configure.ac:197: the top level])
+m4trace:configure.ac:197: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2661: _AC_LINK_IFELSE is expanded from...
+../../lib/autoconf/general.m4:2678: AC_LINK_IFELSE is expanded from...
+../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/functions.m4:59: AC_CHECK_FUNC is expanded from...
+m4/curslib.m4:4: CF_CURSES_LIBS is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/libs.m4:99: AC_CHECK_LIB is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/functions.m4:59: AC_CHECK_FUNC is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:1481: AC_ARG_WITH is expanded from...
+configure.ac:197: the top level])
+m4trace:configure.ac:197: -1- CF_CHECK_FUNCDECLS([#include <${cf_cv_ncurses_header-curses.h}>], [start_color typeahead bkgdset curs_set meta use_default_colors resizeterm])
+m4trace:configure.ac:197: -1- CF_CHECK_FUNCDECL([#include <${cf_cv_ncurses_header-curses.h}>], [$ac_func], [
+  CF_UPPER(ac_tr_func,HAVE_$ac_func)
+  AC_DEFINE_UNQUOTED($ac_tr_func) ], [])
+m4trace:configure.ac:197: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2614: AC_TRY_COMPILE is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
+m4/funcdecl.m4:10: CF_CHECK_FUNCDECL is expanded from...
+m4/funcdecl.m4:39: CF_CHECK_FUNCDECLS is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:1481: AC_ARG_WITH is expanded from...
+configure.ac:197: the top level])
+m4trace:configure.ac:197: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2614: AC_TRY_COMPILE is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2590: _AC_COMPILE_IFELSE is expanded from...
+../../lib/autoconf/general.m4:2606: AC_COMPILE_IFELSE is expanded from...
+../../lib/autoconf/general.m4:2614: AC_TRY_COMPILE is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
+m4/funcdecl.m4:10: CF_CHECK_FUNCDECL is expanded from...
+m4/funcdecl.m4:39: CF_CHECK_FUNCDECLS is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:1481: AC_ARG_WITH is expanded from...
+configure.ac:197: the top level])
+m4trace:configure.ac:197: -1- CF_UPPER([ac_tr_func], [HAVE_$ac_func])
+m4trace:configure.ac:197: -1- m4_pattern_allow([^HAVE_COLOR$])
+m4trace:configure.ac:301: -1- m4_pattern_allow([^STDC_HEADERS$])
+m4trace:configure.ac:305: -1- m4_pattern_allow([^HAVE_UNIX_H$])
+m4trace:configure.ac:310: -1- m4_pattern_allow([^sig_atomic_t$])
+m4trace:configure.ac:331: -1- m4_pattern_allow([^SIG_ATOMIC_VOLATILE_T$])
+m4trace:configure.ac:333: -1- m4_pattern_allow([^SIG_ATOMIC_VOLATILE_T$])
+m4trace:configure.ac:336: -1- m4_pattern_allow([^HAVE_DECL_SYS_SIGLIST$])
+m4trace:configure.ac:344: -1- m4_pattern_allow([^pid_t$])
+m4trace:configure.ac:345: -1- m4_pattern_allow([^ssize_t$])
+m4trace:configure.ac:349: -1- m4_pattern_allow([^HAVE_SETENV$])
+m4trace:configure.ac:349: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:349: -1- m4_pattern_allow([^HAVE_STRCASECMP$])
+m4trace:configure.ac:349: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:349: -1- m4_pattern_allow([^HAVE_STRDUP$])
+m4trace:configure.ac:349: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:349: -1- m4_pattern_allow([^HAVE_STRSEP$])
+m4trace:configure.ac:349: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:349: -1- m4_pattern_allow([^HAVE_STRTOK_R$])
+m4trace:configure.ac:349: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:349: -1- m4_pattern_allow([^HAVE_WCSCASECMP$])
+m4trace:configure.ac:349: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:350: -1- m4_pattern_allow([^HAVE_STRCASESTR$])
+m4trace:configure.ac:350: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:350: -1- m4_pattern_allow([^HAVE_MKDTEMP$])
+m4trace:configure.ac:350: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:354: -1- m4_pattern_allow([^HAVE_GETOPT_H$])
+m4trace:configure.ac:405: -1- m4_pattern_allow([^HAVE_SNPRINTF$])
+m4trace:configure.ac:408: -1- m4_pattern_allow([^HAVE_VSNPRINTF$])
+m4trace:configure.ac:411: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:414: -1- XIPH_FUNC_VA_COPY
+m4trace:configure.ac:414: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+m4/funcs.m4:5: XIPH_FUNC_VA_COPY is expanded from...
+configure.ac:414: the top level])
+m4trace:configure.ac:414: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2661: _AC_LINK_IFELSE is expanded from...
+../../lib/autoconf/general.m4:2678: AC_LINK_IFELSE is expanded from...
+../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+m4/funcs.m4:5: XIPH_FUNC_VA_COPY is expanded from...
+configure.ac:414: the top level])
+m4trace:configure.ac:414: -1- m4_pattern_allow([^va_copy$])
+m4trace:configure.ac:414: -1- m4_pattern_allow([^va_copy$])
+m4trace:configure.ac:417: -1- m4_pattern_allow([^HAVE_FTRUNCATE$])
+m4trace:configure.ac:417: -1- m4_pattern_allow([^HAVE_LIBX$])
+m4trace:configure.ac:420: -1- m4_pattern_allow([^HAVE_STRFTIME$])
+m4trace:configure.ac:420: -1- m4_pattern_allow([^HAVE_LIBINTL$])
+m4trace:configure.ac:423: -1- m4_pattern_allow([^HAVE_FCHDIR$])
+m4trace:configure.ac:425: -1- m4_pattern_allow([^HAVE_REGCOMP$])
+m4trace:configure.ac:443: -1- m4_pattern_allow([^USE_GNU_REGEX$])
+m4trace:configure.ac:444: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:454: -1- m4_pattern_allow([^MAILPATH$])
+m4trace:configure.ac:455: -1- m4_pattern_allow([^HOMESPOOL$])
+m4trace:configure.ac:460: -1- m4_pattern_allow([^USE_DOTLOCK$])
+m4trace:configure.ac:480: -1- m4_pattern_allow([^MAILPATH$])
+m4trace:configure.ac:497: -1- m4_pattern_allow([^USE_DOTLOCK$])
+m4trace:configure.ac:514: -1- m4_pattern_allow([^USE_DOTLOCK$])
+m4trace:configure.ac:515: -1- m4_pattern_allow([^USE_SETGID$])
+m4trace:configure.ac:527: -1- m4_pattern_allow([^DL_STANDALONE$])
+m4trace:configure.ac:533: -1- m4_pattern_allow([^DOTLOCK_TARGET$])
+m4trace:configure.ac:539: -1- m4_pattern_allow([^datarootdir$])
+m4trace:configure.ac:550: -1- m4_pattern_allow([^docdir$])
+m4trace:configure.ac:559: -1- m4_pattern_allow([^DOTLOCK_GROUP$])
+m4trace:configure.ac:560: -1- m4_pattern_allow([^DOTLOCK_PERMISSION$])
+m4trace:configure.ac:562: -1- m4_pattern_allow([^DOMAIN$])
+m4trace:configure.ac:573: -1- m4_pattern_allow([^USE_POP$])
+m4trace:configure.ac:583: -1- m4_pattern_allow([^USE_IMAP$])
+m4trace:configure.ac:593: -1- AM_CONDITIONAL([BUILD_IMAP], [test x$need_imap = xyes])
+m4trace:configure.ac:593: -1- m4_pattern_allow([^BUILD_IMAP_TRUE$])
+m4trace:configure.ac:593: -1- m4_pattern_allow([^BUILD_IMAP_FALSE$])
+m4trace:configure.ac:593: -1- _AM_SUBST_NOTMAKE([BUILD_IMAP_TRUE])
+m4trace:configure.ac:593: -1- _AM_SUBST_NOTMAKE([BUILD_IMAP_FALSE])
+m4trace:configure.ac:595: -1- m4_pattern_allow([^USE_SMTP$])
+m4trace:configure.ac:610: -1- m4_pattern_allow([^HAVE_SYS_SELECT_H$])
+m4trace:configure.ac:614: -2- m4_pattern_allow([^socklen_t$])
+m4trace:configure.ac:616: -2- m4_pattern_allow([^HAVE_LIBNSL$])
+m4trace:configure.ac:617: -2- m4_pattern_allow([^HAVE_LIBSOCKET$])
+m4trace:configure.ac:618: -1- m4_pattern_allow([^HAVE_GETADDRINFO$])
+m4trace:configure.ac:619: -1- m4_pattern_allow([^USE_SOCKET$])
+m4trace:configure.ac:632: -1- MUTT_AM_PATH_GSSAPI([gss_prefix])
+m4trace:configure.ac:632: -1- m4_pattern_allow([^KRB5CFGPATH$])
+m4trace:configure.ac:642: -1- m4_pattern_allow([^HAVE_HEIMDAL$])
+m4trace:configure.ac:646: -1- m4_pattern_allow([^USE_GSS$])
+m4trace:configure.ac:652: -1- AM_CONDITIONAL([USE_GSS], [test x$need_gss = xyes])
+m4trace:configure.ac:652: -1- m4_pattern_allow([^USE_GSS_TRUE$])
+m4trace:configure.ac:652: -1- m4_pattern_allow([^USE_GSS_FALSE$])
+m4trace:configure.ac:652: -1- _AM_SUBST_NOTMAKE([USE_GSS_TRUE])
+m4trace:configure.ac:652: -1- _AM_SUBST_NOTMAKE([USE_GSS_FALSE])
+m4trace:configure.ac:656: -1- m4_pattern_allow([^HAVE_LIBSSL$])
+m4trace:configure.ac:656: -1- m4_pattern_allow([^USE_SSL$])
+m4trace:configure.ac:656: -1- m4_pattern_allow([^USE_SSL_OPENSSL$])
+m4trace:configure.ac:704: -1- m4_pattern_allow([^HAVE_DECL_GNUTLS_VERIFY_DISABLE_TIME_CHECKS$])
+m4trace:configure.ac:704: -1- m4_pattern_allow([^USE_SSL$])
+m4trace:configure.ac:704: -1- m4_pattern_allow([^USE_SSL_GNUTLS$])
+m4trace:configure.ac:721: -1- AM_CONDITIONAL([USE_SSL], [test x$need_ssl = xyes])
+m4trace:configure.ac:721: -1- m4_pattern_allow([^USE_SSL_TRUE$])
+m4trace:configure.ac:721: -1- m4_pattern_allow([^USE_SSL_FALSE$])
+m4trace:configure.ac:721: -1- _AM_SUBST_NOTMAKE([USE_SSL_TRUE])
+m4trace:configure.ac:721: -1- _AM_SUBST_NOTMAKE([USE_SSL_FALSE])
+m4trace:configure.ac:723: -1- m4_pattern_allow([^USE_SASL$])
+m4trace:configure.ac:755: -1- AM_CONDITIONAL([USE_SASL], [test x$need_sasl = xyes])
+m4trace:configure.ac:755: -1- m4_pattern_allow([^USE_SASL_TRUE$])
+m4trace:configure.ac:755: -1- m4_pattern_allow([^USE_SASL_FALSE$])
+m4trace:configure.ac:755: -1- _AM_SUBST_NOTMAKE([USE_SASL_TRUE])
+m4trace:configure.ac:755: -1- _AM_SUBST_NOTMAKE([USE_SASL_FALSE])
+m4trace:configure.ac:759: -1- m4_pattern_allow([^DEBUG$])
+m4trace:configure.ac:765: -1- m4_pattern_allow([^USE_FLOCK$])
+m4trace:configure.ac:775: -1- m4_pattern_allow([^USE_FCNTL$])
+m4trace:configure.ac:782: -1- m4_pattern_allow([^HAVE_DIRENT_D_INO$])
+m4trace:configure.ac:797: -1- m4_pattern_allow([^NFS_ATTRIBUTE_HACK$])
+m4trace:configure.ac:805: -1- m4_pattern_allow([^SUN_ATTACHMENT$])
+m4trace:configure.ac:810: -1- m4_pattern_allow([^LOCALES_HACK$])
+m4trace:configure.ac:815: -1- m4_pattern_allow([^EXECSHELL$])
+m4trace:configure.ac:815: -1- m4_pattern_allow([^EXECSHELL$])
+m4trace:configure.ac:815: -1- m4_pattern_allow([^EXECSHELL$])
+m4trace:configure.ac:824: -1- m4_pattern_allow([^EXACT_ADDRESS$])
+m4trace:configure.ac:844: -1- m4_pattern_allow([^USE_HCACHE$])
+m4trace:configure.ac:896: -2- m4_pattern_allow([^HAVE_TC$])
+m4trace:configure.ac:927: -1- m4_pattern_allow([^HAVE_VILLA_H$])
+m4trace:configure.ac:928: -1- m4_pattern_allow([^HAVE_QDBM$])
+m4trace:configure.ac:959: -1- m4_pattern_allow([^HAVE_GDBM$])
+m4trace:configure.ac:1020: -1- m4_pattern_allow([^HAVE_DB4$])
+m4trace:configure.ac:1034: -1- AM_CONDITIONAL([BUILD_HCACHE], [test x$db_found != xno])
+m4trace:configure.ac:1034: -1- m4_pattern_allow([^BUILD_HCACHE_TRUE$])
+m4trace:configure.ac:1034: -1- m4_pattern_allow([^BUILD_HCACHE_FALSE$])
+m4trace:configure.ac:1034: -1- _AM_SUBST_NOTMAKE([BUILD_HCACHE_TRUE])
+m4trace:configure.ac:1034: -1- _AM_SUBST_NOTMAKE([BUILD_HCACHE_FALSE])
+m4trace:configure.ac:1044: -1- m4_pattern_allow([^MUTT_MD5$])
+m4trace:configure.ac:1046: -1- m4_pattern_allow([^MUTTLIBS$])
+m4trace:configure.ac:1047: -1- m4_pattern_allow([^MUTT_LIB_OBJECTS$])
+m4trace:configure.ac:1048: -1- m4_pattern_allow([^LIBIMAP$])
+m4trace:configure.ac:1049: -1- m4_pattern_allow([^LIBIMAPDEPS$])
+m4trace:configure.ac:1059: -1- MUTT_AM_GNU_GETTEXT
+m4trace:configure.ac:1059: -1- _m4_warn([obsolete], [The macro `AC_ISC_POSIX' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/specific.m4:446: AC_ISC_POSIX is expanded from...
+m4/gettext.m4:303: MUTT_AM_GNU_GETTEXT is expanded from...
+configure.ac:1059: the top level])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^off_t$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^size_t$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^HAVE_ALLOCA_H$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^HAVE_ALLOCA$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^ALLOCA$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^C_ALLOCA$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^CRAY_STACKSEG_END$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^STACK_DIRECTION$])
+m4trace:configure.ac:1059: -1- AC_DEFUN([_AC_Header_stdlib_h], [m4_divert_text([INIT_PREPARE], [AS_VAR_APPEND([ac_header_list], [" stdlib.h"])])
+_AC_HEADERS_EXPANSION])
+m4trace:configure.ac:1059: -1- AC_DEFUN([_AC_Header_unistd_h], [m4_divert_text([INIT_PREPARE], [AS_VAR_APPEND([ac_header_list], [" unistd.h"])])
+_AC_HEADERS_EXPANSION])
+m4trace:configure.ac:1059: -1- AC_DEFUN([_AC_Header_sys_param_h], [m4_divert_text([INIT_PREPARE], [AS_VAR_APPEND([ac_header_list], [" sys/param.h"])])
+_AC_HEADERS_EXPANSION])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^HAVE_GETPAGESIZE$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^HAVE_MMAP$])
+m4trace:configure.ac:1059: -1- MUTT_jm_GLIBC21
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^GLIBC21$])
+m4trace:configure.ac:1059: -1- MUTT_AM_ICONV
+m4trace:configure.ac:1059: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:207: AC_HELP_STRING is expanded from...
+m4/iconv.m4:5: MUTT_AM_ICONV is expanded from...
+m4/gettext.m4:303: MUTT_AM_GNU_GETTEXT is expanded from...
+configure.ac:1059: the top level])
+m4trace:configure.ac:1059: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
+../../lib/autoconf/general.m4:2052: AC_CACHE_CHECK is expanded from...
+m4/iconv.m4:5: MUTT_AM_ICONV is expanded from...
+m4/gettext.m4:303: MUTT_AM_GNU_GETTEXT is expanded from...
+configure.ac:1059: the top level])
+m4trace:configure.ac:1059: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
+../../lib/autoconf/general.m4:2052: AC_CACHE_CHECK is expanded from...
+m4/iconv.m4:5: MUTT_AM_ICONV is expanded from...
+m4/gettext.m4:303: MUTT_AM_GNU_GETTEXT is expanded from...
+configure.ac:1059: the top level])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^HAVE_ICONV$])
+m4trace:configure.ac:1059: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2614: AC_TRY_COMPILE is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
+m4/iconv.m4:5: MUTT_AM_ICONV is expanded from...
+m4/gettext.m4:303: MUTT_AM_GNU_GETTEXT is expanded from...
+configure.ac:1059: the top level])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^ICONV_CONST$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^LIBICONV$])
+m4trace:configure.ac:1059: -1- MUTT_AM_LANGINFO_CODESET
+m4trace:configure.ac:1059: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
+../../lib/autoconf/general.m4:2052: AC_CACHE_CHECK is expanded from...
+m4/codeset.m4:5: MUTT_AM_LANGINFO_CODESET is expanded from...
+m4/gettext.m4:303: MUTT_AM_GNU_GETTEXT is expanded from...
+configure.ac:1059: the top level])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^HAVE_LANGINFO_CODESET$])
+m4trace:configure.ac:1059: -1- MUTT_AM_LC_MESSAGES
+m4trace:configure.ac:1059: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
+../../lib/autoconf/general.m4:2052: AC_CACHE_CHECK is expanded from...
+m4/lcmessage.m4:15: MUTT_AM_LC_MESSAGES is expanded from...
+m4/gettext.m4:303: MUTT_AM_GNU_GETTEXT is expanded from...
+configure.ac:1059: the top level])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^HAVE_LC_MESSAGES$])
+m4trace:configure.ac:1059: -1- MUTT_AM_WITH_NLS([], [], [])
+m4trace:configure.ac:1059: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:207: AC_HELP_STRING is expanded from...
+m4/gettext.m4:49: MUTT_AM_WITH_NLS is expanded from...
+m4/gettext.m4:303: MUTT_AM_GNU_GETTEXT is expanded from...
+configure.ac:1059: the top level])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^USE_NLS$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^ENABLE_NLS$])
+m4trace:configure.ac:1059: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:207: AC_HELP_STRING is expanded from...
+m4/gettext.m4:49: MUTT_AM_WITH_NLS is expanded from...
+m4/gettext.m4:303: MUTT_AM_GNU_GETTEXT is expanded from...
+configure.ac:1059: the top level])
+m4trace:configure.ac:1059: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
+../../lib/autoconf/general.m4:2052: AC_CACHE_CHECK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/headers.m4:129: _AC_CHECK_HEADER_MONGREL is expanded from...
+../../lib/autoconf/headers.m4:67: AC_CHECK_HEADER is expanded from...
+m4/gettext.m4:49: MUTT_AM_WITH_NLS is expanded from...
+m4/gettext.m4:303: MUTT_AM_GNU_GETTEXT is expanded from...
+configure.ac:1059: the top level])
+m4trace:configure.ac:1059: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
+../../lib/autoconf/general.m4:2052: AC_CACHE_CHECK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/headers.m4:129: _AC_CHECK_HEADER_MONGREL is expanded from...
+../../lib/autoconf/headers.m4:67: AC_CHECK_HEADER is expanded from...
+m4/gettext.m4:49: MUTT_AM_WITH_NLS is expanded from...
+m4/gettext.m4:303: MUTT_AM_GNU_GETTEXT is expanded from...
+configure.ac:1059: the top level])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^HAVE_GETTEXT$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^HAVE_DCGETTEXT$])
+m4trace:configure.ac:1059: -1- MUTT_AM_PATH_PROG_WITH_TEST([MSGFMT], [msgfmt], [$ac_dir/$ac_word --statistics /dev/null >/dev/null 2>&1], [:])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^MSGFMT$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^GMSGFMT$])
+m4trace:configure.ac:1059: -1- MUTT_AM_PATH_PROG_WITH_TEST([XGETTEXT], [xgettext], [$ac_dir/$ac_word --omit-header /dev/null >/dev/null 2>&1], [:])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^XGETTEXT$])
+m4trace:configure.ac:1059: -1- MUTT_AM_PATH_PROG_WITH_TEST([MSGFMT], [msgfmt], [$ac_dir/$ac_word --statistics /dev/null >/dev/null 2>&1], [:])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^MSGFMT$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^GMSGFMT$])
+m4trace:configure.ac:1059: -1- MUTT_AM_PATH_PROG_WITH_TEST([XGETTEXT], [xgettext], [$ac_dir/$ac_word --omit-header /dev/null >/dev/null 2>&1], [:])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^XGETTEXT$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^MSGFMT$])
+m4trace:configure.ac:1059: -1- _m4_warn([obsolete], [The macro `AC_OUTPUT_COMMANDS' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/status.m4:1026: AC_OUTPUT_COMMANDS is expanded from...
+m4/gettext.m4:49: MUTT_AM_WITH_NLS is expanded from...
+m4/gettext.m4:303: MUTT_AM_GNU_GETTEXT is expanded from...
+configure.ac:1059: the top level])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^INTLBISON$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^BUILD_INCLUDED_LIBINTL$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^USE_INCLUDED_LIBINTL$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^CATALOGS$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^CATOBJEXT$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^GMOFILES$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^INTLLIBS$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^INTLOBJS$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^POFILES$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^POSUB$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^DATADIRNAME$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^INSTOBJEXT$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^GENCAT$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^MKINSTALLDIRS$])
+m4trace:configure.ac:1059: -1- m4_pattern_allow([^INTL_LIBTOOL_SUFFIX_PREFIX$])
+m4trace:configure.ac:1066: -1- m4_pattern_allow([^HAVE_ICONV_H$])
+m4trace:configure.ac:1066: -1- m4_pattern_allow([^HAVE_ICONV_T_DEF$])
+m4trace:configure.ac:1128: -1- m4_pattern_allow([^ICONV_NONTRANS$])
+m4trace:configure.ac:1130: -1- m4_pattern_allow([^ICONV_NONTRANS$])
+m4trace:configure.ac:1136: -1- m4_pattern_allow([^HAVE_BIND_TEXTDOMAIN_CODESET$])
+m4trace:configure.ac:1141: -1- m4_pattern_allow([^HAVE_BIND_TEXTDOMAIN_CODESET$])
+m4trace:configure.ac:1176: -1- m4_pattern_allow([^HAVE_LIBIDN$])
+m4trace:configure.ac:1194: -1- m4_pattern_allow([^HAVE_WCHAR_H$])
+m4trace:configure.ac:1206: -1- m4_pattern_allow([^wchar_t$])
+m4trace:configure.ac:1219: -1- m4_pattern_allow([^wint_t$])
+m4trace:configure.ac:1222: -1- m4_pattern_allow([^HAVE_WCTYPE_H$])
+m4trace:configure.ac:1237: -1- m4_pattern_allow([^mbstate_t$])
+m4trace:configure.ac:1262: -1- m4_pattern_allow([^HAVE_WC_FUNCS$])
+m4trace:configure.ac:1270: -1- m4_pattern_allow([^HAVE_LANGINFO_CODESET$])
+m4trace:configure.ac:1276: -1- m4_pattern_allow([^HAVE_LANGINFO_YESEXPR$])
+m4trace:configure.ac:1283: -1- m4_pattern_allow([^OSPCAT$])
+m4trace:configure.ac:1302: -1- m4_pattern_allow([^DSLROOT$])
+m4trace:configure.ac:1311: -1- m4_pattern_allow([^MAKEDOC_FULL$])
+m4trace:configure.ac:1317: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:1317: -1- m4_pattern_allow([^LTLIBOBJS$])
+m4trace:configure.ac:1317: -1- AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
+m4trace:configure.ac:1317: -1- m4_pattern_allow([^am__EXEEXT_TRUE$])
+m4trace:configure.ac:1317: -1- m4_pattern_allow([^am__EXEEXT_FALSE$])
+m4trace:configure.ac:1317: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_TRUE])
+m4trace:configure.ac:1317: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_FALSE])
+m4trace:configure.ac:1317: -1- _AC_AM_CONFIG_HEADER_HOOK(["$ac_file"])
+m4trace:configure.ac:1317: -1- _AM_OUTPUT_DEPENDENCY_COMMANDS

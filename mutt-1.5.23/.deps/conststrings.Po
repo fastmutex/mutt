@@ -1,0 +1,1 @@
+conststrings.o: conststrings.c
